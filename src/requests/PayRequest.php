@@ -38,8 +38,8 @@ class PayRequest extends BaseRequest
         return [
             'destination' => $this->getDestination(),
             'amount' => [
-                $this->getCurrency(),
-                $this->getAmount(),
+                'currency' => $this->getCurrency(),
+                'value' => $this->getAmount(),
             ],
             'metadata' => $this->getMetadata(),
             '_links' => [

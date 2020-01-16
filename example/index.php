@@ -4,18 +4,18 @@ require 'vendor/autoload.php';
 
 use Kopokopo\SDK\K2;
 
-$K2_CLIENT_ID = 'your_client_id';
-$K2_CLIENT_SECRET = '10af7ad062a21d9c841877f87b7dec3dbe51aeb3';
-$BASE_URL = 'https://9284bede-3488-4b2b-a1e8-d6e9f8d86aff.mock.pstmn.io';
+$K2_CLIENT_ID = 'onDPKB6ZY_KT4hrUnsWJEuCXW3VvGHnI_XZv5dmsxPQ';
+$K2_CLIENT_SECRET = 'A1Wqj1_9KKAn1oAa3G9eCkqXwzM0GT9BgEMsjiXq0Zc';
+$BASE_URL = 'http://localhost:3000';
 
 $K2 = new K2($K2_CLIENT_ID, $K2_CLIENT_SECRET, $BASE_URL);
 
 $router = new AltoRouter();
 
-// $tokens = $K2->TokenService();
-// $response = $tokens->getToken();
+$tokens = $K2->TokenService();
+$response = $tokens->getToken();
 
-// $access_token = $response['access_token'];
+$access_token = $response['access_token'];
 
 // map homepage
 $router->map('GET', '/', function () {
@@ -56,7 +56,10 @@ $router->map('POST', '/webhook/subscribe', function () {
     $tokens = $K2->TokenService();
     $response = $tokens->getToken();
 
-    $access_token = $response['access_token'];
+    $strju = json_encode($response['data'], true);
+    echo $strju;
+
+    $access_token = $response['data']['access_token'];
 
     echo $access_token;
 
@@ -70,7 +73,7 @@ $router->map('POST', '/webhook/subscribe', function () {
     );
     $response = $webhooks->subscribe($options);
 
-    echo json_encode($response);
+    // return view("views/response.php",compact('response'));
 });
 
 $router->map('POST', '/stk', function () {
@@ -87,11 +90,11 @@ $router->map('POST', '/stk', function () {
         'currency' => 'KES',
         'email' => 'example@example.com',
         'callbackUrl' => 'http://localhost:8000/test',
-        'accessToken' => 'myRand0mAcc3ssT0k3n',
+        'accessToken' => 'suE2FwMpDM5c_j2EKuL-9Y2gzj9F73NOukVUy6Lx5B8',
     ];
     $response = $stk->paymentRequest($options);
 
-    echo json_encode($response);
+    return view("views/response.php",compact('response'));
 });
 
 $router->map('POST', '/transfer', function () {
@@ -106,23 +109,30 @@ $router->map('POST', '/transfer', function () {
     ];
     $response = $transfer->settleFunds($options);
 
-    echo json_encode($response);
+    return view("views/response.php",compact('response'));
 });
 
 $router->map('POST', '/pay', function () {
     global $K2;
+
+    // $tokens = $K2->TokenService();
+    // $tk = $tokens->getToken();
+    // echo json_encode($tk);
+    // $access_token = $tk['data']['access_token'];
+    // echo $access_token;
+    // // global $K2;
     $pay = $K2->PayService();
 
     $options = [
         'destination' => $_POST['destination'],
         'amount' => $_POST['amount'],
         'currency' => 'KES',
-        'accessToken' => 'myRand0mAcc3ssT0k3n',
+        'accessToken' => "9ndnmYsLhomlsTBibGBdmObUVKwU48ICmq6lJkl0hUc",
         'callbackUrl' => 'http://localhost:8000/webhook',
     ];
     $response = $pay->sendPay($options);
 
-    echo json_encode($response);
+    return view("views/response.php",compact('response'));
 });
 
 $router->map('POST', '/webhook', function () {
@@ -135,7 +145,8 @@ $router->map('POST', '/webhook', function () {
 
     $response = $webhooks->webhookHandler($json_str, $_SERVER['HTTP_X_KOPOKOPO_SIGNATURE']);
 
-    echo json_encode($response);
+    // echo json_encode($response);
+    return view("views/response.php",compact('response'));
     // print("POST Details: " .$json_str);
     // print_r($json_str);
 });
@@ -145,6 +156,13 @@ $router->map('GET', '/webhook/resource', function () {
     echo $response;
     echo $response;
 });
+
+function view($page,$variables=[]) {
+    if(count($variables)) {
+        extract($variables);
+    }
+    require $page;
+}
 
 $match = $router->match();
 if ($match && is_callable($match['target'])) {

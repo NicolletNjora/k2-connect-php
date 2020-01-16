@@ -78,12 +78,12 @@ class StkPaymentRequest extends BaseRequest
                 'email' => $this->getEmail(),
             ],
             'amount' => [
-                $this->getCurrency(),
-                $this->getAmount(),
+                'currency' => $this->getCurrency(),
+                'value' => $this->getAmount(),
             ],
-            'metadata' => $this->getMetadata(),
+            'meta_data' => $this->getMetadata(),
             '_links' => [
-                'call_back_url' => $this->getUrl(),
+                'callback_url' => $this->getUrl(),
             ],
         ];
     }

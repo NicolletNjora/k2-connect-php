@@ -11,12 +11,12 @@
     "repositories": [
         {
             "type": "git",
-            "url": "git://github.com/kopokopo/k2-connect-php"
+            "url": "git://github.com/NicolletNjora/k2-connect-php"
         }
     ],
     "require": {
         "altorouter/altorouter": "1.1.0",
-        "kopokopo/kopokopo": "*"
+        "kopokopo/k2-connect-php": "*"
     },
     "config": {
         "secure-http": false

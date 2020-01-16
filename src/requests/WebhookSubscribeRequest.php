@@ -19,12 +19,24 @@ class WebhookSubscribeRequest extends BaseRequest
         return $this->getRequestData('webhookSecret');
     }
 
+    public function getScope()
+    {
+        return $this->getRequestData('scope');
+    }
+
+    public function getScopeReference()
+    {
+        return $this->getRequestData('scopeReference');
+    }
+
     public function getWebhookSubscribeBody()
     {
         return [
             'event_type' => $this->getEventType(),
             'url' => $this->getUrl(),
-            'webhook_secret' => $this->getWebhookSecret(),
+            'secret' => $this->getWebhookSecret(),
+            'scope' => $this->getScope(),
+            'scope_reference' => $this->getScopeReference(),
         ];
     }
 }
