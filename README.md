@@ -13,7 +13,7 @@ You can install the PHP SDK via composer.
 The recommended way to install the SDK is with Composer.
 
 ```
-composer require kopokopo/kopokopo
+composer require kopokopo/k2-connect-php
 ```
 
 ## Initialisation
@@ -60,9 +60,12 @@ $tokens = $K2->TokenService();
 
 // Use the service
 $result = $tokens->getToken();
+if($result['status'] == 'success'){
+    $data = $result['data'];
+    echo "My access token is: ".$data['access_token'];
+    echo "It expires in: ".$data['expires_in'];
+}
 
-//print the result
-print_r($result);
 ```
 
 ### Webhooks
@@ -76,11 +79,11 @@ $router->map('POST', '/webhook', function () {
     global $response;
 
     $webhooks = $K2->Webhooks();
+    $webhookSecret = 'my_webhook_secret';
 
     $json_str = file_get_contents('php://input');
-    var_dump($json_str);
 
-    $response = $webhooks->webhookHandler($json_str, $_SERVER['HTTP_X_KOPOKOPO_SIGNATURE']);
+    $response = $webhooks->webhookHandler($json_str, $_SERVER['HTTP_X_KOPOKOPO_SIGNATURE'], $webhookSecret);
 
     echo json_encode($response);
 });
@@ -96,17 +99,23 @@ $response = $webhooks->subscribe([
     'eventType' => 'buy_goods_received',
     'url' => 'http://localhost:8000/webhook',
     'webhookSecret' => 'my_webhook_secret',
+    'scope' => 'till',
+    'scopeReference' => '555555',
     'accessToken' => 'my_access_token'
 ]);
 
-print_r($response);
+if($response['status'] == 'success')
+{
+    echo "The resource location is:" . json_encode($response['location']);
+}
+
 ```
 
 ### STK PUSH
 
 ```php
 $stk = $K2->StkService();
-$result = $stk->paymentRequest([
+$response = $stk->paymentRequest([
                 'paymentChannel' => 'M-PESA',
                 'tillNumber' => '13432',
                 'firstName' => 'Jane',
@@ -117,7 +126,10 @@ $result = $stk->paymentRequest([
                 'callbackUrl' => 'http://localhost:8000/test',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ]);
-print_r($result);
+if($response['status'] == 'success')
+{
+    echo "The resource location is:" . json_encode($response['location']);
+}
 ```
 
 For other usage examples check out the [example app](https://github.com/NicoNjora/k2-connect-php-example).
@@ -146,7 +158,7 @@ NB: The access token is required to send subsequent requests
   - `amount`: Amount to charge. `REQUIRED`
   - `callbackUrl`: Amount to charge. `REQUIRED`
   - `accessToken`: Gotten from the [`TokenService`](#tokenservice) response `REQUIRED`
-  - `metadata`: It is a hash containing a maximum of 5 key value pairs
+  - `metadata`: It is an associative array containing a maximum of 5 key value pairs
 
 - `paymentRequestStatus([location ])`:
 
@@ -206,7 +218,7 @@ For more information, please read [api-docs#transfer](https://api-docs.kopokopo.
 
 ### Responses and Results
 
-- All the post requests are asynchronous apart from `TokenService`. This means that the result will be posted to your custom callback url when the request is complete. The immediate response of the post requests contain the `location` url of the request you have sent which you can use to query the status.
+- All the post requests are asynchronous apart from [TokenService](#tokenservice). This means that the result will be posted to your custom callback url when the request is complete. The immediate response of the post requests contain the `location` url of the request you have sent which you can use to query the status.
 
 Note: The asynchronous results are processed like webhooks.
 
