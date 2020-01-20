@@ -25,6 +25,14 @@ abstract class Service
 
     protected static function success($data)
     {
+        $headers = $data->getHeaders();
+        // The location header is nested, hence: $headers['location'][0]
+        return [
+            'status' => 'success',
+            'location' => $headers['location'][0],
+        ];
+    }
+
     protected static function tokenSuccess($data)
     {
         return [
