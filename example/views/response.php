@@ -4,8 +4,7 @@
 <div class="container">
 
 <?php
-    if($response)
-    {
+    if(isset($response)){
         // extract($response);
         echo "The response is:" . json_encode($response);
     } else{

@@ -12,10 +12,11 @@ $K2 = new K2($K2_CLIENT_ID, $K2_CLIENT_SECRET, $BASE_URL);
 
 $router = new AltoRouter();
 
+// Get oauth token
 $tokens = $K2->TokenService();
-$response = $tokens->getToken();
-
-$access_token = $response['access_token'];
+$tokenResponse = $tokens->getToken();
+$data= json_decode( json_encode($tokenResponse['data']), true);
+$access_token = $data['access_token'];
 
 // map homepage
 $router->map('GET', '/', function () {
@@ -52,16 +53,7 @@ $router->map('GET', '/pay/status', function () {
 
 $router->map('POST', '/webhook/subscribe', function () {
     global $K2;
-
-    $tokens = $K2->TokenService();
-    $response = $tokens->getToken();
-
-    $strju = json_encode($response['data'], true);
-    echo $strju;
-
-    $access_token = $response['data']['access_token'];
-
-    echo $access_token;
+    global $access_token;
 
     $webhooks = $K2->Webhooks();
 
@@ -69,15 +61,18 @@ $router->map('POST', '/webhook/subscribe', function () {
         'eventType' => $_POST['event_type'],
         'url' => $_POST['url'],
         'webhookSecret' => 'my_webhook_secret',
+        'scope' => 'till',
+        'scopeReference' => '555555',
         'accessToken' => $access_token,
     );
     $response = $webhooks->subscribe($options);
 
-    // return view("views/response.php",compact('response'));
+    return view("views/response.php",compact('response'));
 });
 
 $router->map('POST', '/stk', function () {
     global $K2;
+    global $access_token;
     $stk = $K2->StkService();
 
     $options = [
@@ -90,7 +85,7 @@ $router->map('POST', '/stk', function () {
         'currency' => 'KES',
         'email' => 'example@example.com',
         'callbackUrl' => 'http://localhost:8000/test',
-        'accessToken' => 'suE2FwMpDM5c_j2EKuL-9Y2gzj9F73NOukVUy6Lx5B8',
+        'accessToken' => $access_token,
     ];
     $response = $stk->paymentRequest($options);
 
@@ -99,6 +94,7 @@ $router->map('POST', '/stk', function () {
 
 $router->map('POST', '/transfer', function () {
     global $K2;
+    global $access_token;
     $transfer = $K2->TransferService();
 
     $options = [
@@ -114,6 +110,7 @@ $router->map('POST', '/transfer', function () {
 
 $router->map('POST', '/pay', function () {
     global $K2;
+    global $access_token;
 
     // $tokens = $K2->TokenService();
     // $tk = $tokens->getToken();
@@ -127,7 +124,7 @@ $router->map('POST', '/pay', function () {
         'destination' => $_POST['destination'],
         'amount' => $_POST['amount'],
         'currency' => 'KES',
-        'accessToken' => "9ndnmYsLhomlsTBibGBdmObUVKwU48ICmq6lJkl0hUc",
+        'accessToken' => $access_token,
         'callbackUrl' => 'http://localhost:8000/webhook',
     ];
     $response = $pay->sendPay($options);
@@ -140,21 +137,25 @@ $router->map('POST', '/webhook', function () {
     global $response;
 
     $webhooks = $K2->Webhooks();
+    $webhookSecret = 'buy_goods_webhook_secret';
 
     $json_str = file_get_contents('php://input');
+    
+    // return view("views/response.php",compact('json_str'));
 
-    $response = $webhooks->webhookHandler($json_str, $_SERVER['HTTP_X_KOPOKOPO_SIGNATURE']);
+    $response = $webhooks->webhookHandler($json_str, $_SERVER['HTTP_X_KOPOKOPO_SIGNATURE'], $webhookSecret);
 
-    // echo json_encode($response);
-    return view("views/response.php",compact('response'));
+    echo json_encode($response);
+    // return view("views/response.php",compact('response'));
     // print("POST Details: " .$json_str);
     // print_r($json_str);
 });
 
 $router->map('GET', '/webhook/resource', function () {
     global $response;
-    echo $response;
-    echo $response;
+    // echo $response;
+    // echo json_encode($response);
+    return view("views/response.php",compact('response'));
 });
 
 function view($page,$variables=[]) {

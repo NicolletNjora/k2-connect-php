@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb74f71ee45b02dc2d9b0c6174fe2c25",
+    "content-hash": "5a6fed15fbf931da7e49abdac35b48d3",
     "packages": [
         {
             "name": "altorouter/altorouter",
@@ -247,12 +247,12 @@
             "time": "2019-12-21T15:35:40+00:00"
         },
         {
-            "name": "kopokopo/kopokopo",
+            "name": "kopokopo/k2-connect-php",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git://github.com/kopokopo/k2-connect-php",
-                "reference": "bd87fe8f9ebfc58ff7b4d944f496c13e1d8b3560"
+                "url": "git://github.com/NicolletNjora/k2-connect-php",
+                "reference": "122d608c37d04c5f3cb20c373fab3073b78f6033"
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.3"
@@ -277,7 +277,7 @@
                 }
             ],
             "description": "Kopokopo's php SDK",
-            "time": "2019-04-03T11:42:22+00:00"
+            "time": "2020-01-16T08:07:09+00:00"
         },
         {
             "name": "psr/http-message",
