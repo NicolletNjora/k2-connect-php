@@ -23,7 +23,8 @@ class PayService extends Service
                 $payRecipientrequest = new PayRecipientMobileRequest($options);
             }
 
-            $response = $this->client->post('pay_recipients', ['body' => json_encode($payRecipientrequest->getPayRecipientBody()), 'headers' => $payRecipientrequest->getHeaders()]);
+            // FIXME: Do not hard code version
+            $response = $this->client->post('api/v1/pay_recipients', ['body' => json_encode($payRecipientrequest->getPayRecipientBody()), 'headers' => $payRecipientrequest->getHeaders()]);
 
             return $this->success($response);
         } catch (Exception $e) {
@@ -35,7 +36,8 @@ class PayService extends Service
     {
         $payRequest = new PayRequest($options);
         try {
-            $response = $this->client->post('payments', ['body' => json_encode($payRequest->getPayBody()), 'headers' => $payRequest->getHeaders()]);
+            // FIXME: Do not hard code version
+            $response = $this->client->post('api/v1/payments', ['body' => json_encode($payRequest->getPayBody()), 'headers' => $payRequest->getHeaders()]);
 
             return $this->success($response);
         } catch (Exception $e) {
@@ -47,7 +49,9 @@ class PayService extends Service
     {
         $payStatus = new StatusRequest($options);
         try {
-            $response = $this->client->get('pay_status', ['query' => $payStatus->getLocation(), 'headers' => $payStatus->getHeaders()]);
+            // FIXME: Do not hard code version
+            // TODO: Figure out what to do with getStatus
+            $response = $this->client->get('api/v1/payments/'.$payStatus->getLocation(), ['headers' => $payStatus->getHeaders()]);
 
             return $this->success($response);
         } catch (Exception $e) {

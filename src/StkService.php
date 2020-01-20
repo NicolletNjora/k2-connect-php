@@ -14,7 +14,8 @@ class StkService extends Service
     {
         $stkPaymentrequest = new StkPaymentRequest($options);
         try {
-            $response = $this->client->post('payment_requests', ['body' => json_encode($stkPaymentrequest->getPaymentRequestBody()), 'headers' => $stkPaymentrequest->getHeaders()]);
+            // FIXME: Do not hard code version
+            $response = $this->client->post('api/v1/incoming_payments', ['body' => json_encode($stkPaymentrequest->getPaymentRequestBody()), 'headers' => $stkPaymentrequest->getHeaders()]);
 
             return $this->success($response);
         } catch (Exception $e) {
