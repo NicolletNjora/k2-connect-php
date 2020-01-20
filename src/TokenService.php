@@ -9,13 +9,13 @@ class TokenService extends Service
         $grantType = 'client_credentials';
 
         $requestData = [
-            'client_id' => $this->clientSecret,
+            'client_id' => $this->clientId,
             'client_secret' => $this->clientSecret,
             'grant_type' => $grantType,
         ];
 
         $response = $this->client->post('oauth', ['form_params' => $requestData]);
 
-        return $this->success($response);
+        return $this->tokenSuccess($response);
     }
 }

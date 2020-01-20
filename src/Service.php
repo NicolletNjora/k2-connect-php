@@ -25,6 +25,8 @@ abstract class Service
 
     protected static function success($data)
     {
+    protected static function tokenSuccess($data)
+    {
         return [
             'status' => 'success',
             'data' => json_decode($data->getBody()->getContents()),
