@@ -1,0 +1,14 @@
+{
+    "data": {
+        "id": "abcb3ecf-2295-4cb2-bc27-afcd314f54c1",
+        "type": "pay_recipient",
+        "attributes": {
+            "recipient_type": "MobileWallet",
+            "first_name": "John",
+            "last_name": "Doe",
+            "phone": "+254999999999",
+            "email": "johndoe@nomail.net",
+            "network": "Safaricom"
+        }
+    }
+}

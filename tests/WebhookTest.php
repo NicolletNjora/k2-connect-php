@@ -61,6 +61,8 @@ class WebhookTest extends TestCase
                 'url' => 'http://localhost:8000/webhook',
                 'webhookSecret' => 'my_webhook_secret',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
+                'scope' => 'till',
+                'scopeReference' => '555555'
             ])
         );
     }
@@ -73,6 +75,8 @@ class WebhookTest extends TestCase
                 'url' => 'http://localhost:8000/webhook',
                 'webhookSecret' => 'my_webhook_secret',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
+                'scope' => 'till',
+                'scopeReference' => '555555'
             ])
         );
     }
@@ -85,6 +89,8 @@ class WebhookTest extends TestCase
                 'eventType' => 'buy_goods_received',
                 'webhookSecret' => 'my_webhook_secret',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
+                'scope' => 'till',
+                'scopeReference' => '555555'
             ])
         );
     }
@@ -97,18 +103,34 @@ class WebhookTest extends TestCase
                 'eventType' => 'buy_goods_received',
                 'url' => 'http://localhost:8000/webhook',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
+                'scope' => 'till',
+                'scopeReference' => '555555'
             ])
         );
     }
 
-    public function testWebhookSubscribeWithNoAccessTokenFails()
+    public function testWebhookSubscribeWithNoScopeFails()
     {
         $this->assertArraySubset(
-            ['data' => 'You have to provide the accessToken'],
+            ['data' => 'You have to provide the scope'],
             $this->subscribeClient->subscribe([
                 'eventType' => 'buy_goods_received',
                 'url' => 'http://localhost:8000/webhook',
                 'webhookSecret' => 'my_webhook_secret',
+                'scopeReference' => '555555'
+            ])
+        );
+    }
+
+    public function testWebhookSubscribeWithNoScopeReferenceFails()
+    {
+        $this->assertArraySubset(
+            ['data' => 'You have to provide the scopeReference'],
+            $this->subscribeClient->subscribe([
+                'eventType' => 'buy_goods_received',
+                'url' => 'http://localhost:8000/webhook',
+                'webhookSecret' => 'my_webhook_secret',
+                'scope' => 'till',
             ])
         );
     }
@@ -128,9 +150,10 @@ class WebhookTest extends TestCase
     public function testCustomerCreatedWebhookHandler()
     {
         $k2Sig = 'b3ffb46cb9960b7a8972be1107685e5512c9675e224d8f923eee163c085ad7d0';
+        $webhookSecret = '10af7ad062a21d9c841877f87b7dec3dbe51aeb3';
 
         $reqBody = file_get_contents(__DIR__.'/Mocks/hooks/customercreated.json');
-        $response = $this->client->webhookHandler($reqBody, $k2Sig);
+        $response = $this->client->webhookHandler($reqBody, $k2Sig, $webhookSecret);
 
         $this->assertArraySubset(
             ['status' => 'success'],

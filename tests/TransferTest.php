@@ -65,26 +65,48 @@ class TransferTest extends TestCase
         $this->settleFundsClient = new TransferService($settleFundsClient, $this->clientId, $this->clientSecret);
 
         /*
-        *    settlementStatus() setup
+        *    settlementAccountStatus() setup
         */
 
         // json response to be returned
-        $statusBody = file_get_contents(__DIR__.'/Mocks/transfer-status.json');
+        $settlementAccountStatusBody = file_get_contents(__DIR__.'/Mocks/transfer-account-status.json');
 
-        // Create an instance of MockHandler for returning responses for settlementStatus()
-        $statusMock = new MockHandler([
-            new Response(200, [], $statusBody),
+        // Create an instance of MockHandler for returning responses for settlementAccountStatus()
+        $settlementAccountStatusMock = new MockHandler([
+            new Response(200, [], $settlementAccountStatusBody),
             new RequestException('Error Communicating with Server', new Request('GET', 'test')),
         ]);
 
         // Assign the instance of MockHandler to a HandlerStack
-        $statusHandler = HandlerStack::create($statusMock);
+        $settlementAccountStatusHandler = HandlerStack::create($settlementAccountStatusMock);
+
+        // Create a new instance of client using the settlementAccountStatus() handler
+        $settlementAccountStatusClient = new Client(['handler' => $settlementAccountStatusHandler]);
+
+        // Use$settlementAccountStatusClient to create an instance of the TransferService() class
+        $this->settlementAccountStatusClient = new TransferService($settlementAccountStatusClient, $this->clientId, $this->clientSecret);
+
+        /*
+        *    settlementStatus() setup
+        */
+
+        // json response to be returned
+        $settlementStatusBody = file_get_contents(__DIR__.'/Mocks/transfer-status.json');
+
+        // Create an instance of MockHandler for returning responses for settlementStatus()
+        $settlementStatusMock = new MockHandler([
+            new Response(200, [], $settlementStatusBody),
+            new RequestException('Error Communicating with Server', new Request('GET', 'test')),
+        ]);
+
+        // Assign the instance of MockHandler to a HandlerStack
+        $settlementStatusHandler = HandlerStack::create($settlementStatusMock);
 
         // Create a new instance of client using the settlementStatus() handler
-        $statusClient = new Client(['handler' => $statusHandler]);
+        $settlementStatusClient = new Client(['handler' => $settlementStatusHandler]);
 
         // Use$statusClient to create an instance of the TransferService() class
-        $this->statusClient = new TransferService($statusClient, $this->clientId, $this->clientSecret);
+        $this->settlementStatusClient = new TransferService($settlementStatusClient, $this->clientId, $this->clientSecret);
     }
 
     /*
@@ -220,6 +242,41 @@ class TransferTest extends TestCase
     }
 
     /*
+    *   Settlement Account Status tests
+    */
+
+    public function testSettlementAccountStatusSucceeds()
+    {
+        $this->assertArraySubset(
+            ['status' => 'success'],
+            $this->settlementAccountStatusClient->settlementAccountStatus([
+                'location' => 'my_request_id',
+                'accessToken' => 'myRand0mAcc3ssT0k3n',
+            ])
+        );
+    }
+
+    public function testSettlementAccountStatusWithNoLocationFails()
+    {
+        $this->assertArraySubset(
+            ['data' => 'You have to provide the location'],
+            $this->settlementAccountStatusClient->settlementAccountStatus([
+                'accessToken' => 'myRand0mAcc3ssT0k3n',
+            ])
+        );
+    }
+
+    public function testSettlementAccountStatusWithNoAccessTokenFails()
+    {
+        $this->assertArraySubset(
+            ['data' => 'You have to provide the accessToken'],
+            $this->settlementAccountStatusClient->settlementAccountStatus([
+                'location' => 'my_request_id',
+            ])
+        );
+    }
+
+    /*
     *   Settlement Status tests
     */
 
@@ -227,7 +284,7 @@ class TransferTest extends TestCase
     {
         $this->assertArraySubset(
             ['status' => 'success'],
-            $this->statusClient->settlementStatus([
+            $this->settlementStatusClient->settlementStatus([
                 'location' => 'my_request_id',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
@@ -238,7 +295,7 @@ class TransferTest extends TestCase
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the location'],
-            $this->statusClient->settlementStatus([
+            $this->settlementStatusClient->settlementStatus([
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
         );
@@ -248,7 +305,7 @@ class TransferTest extends TestCase
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the accessToken'],
-            $this->statusClient->settlementStatus([
+            $this->settlementStatusClient->settlementStatus([
                 'location' => 'my_request_id',
             ])
         );

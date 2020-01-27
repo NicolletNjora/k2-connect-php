@@ -69,22 +69,44 @@ class PayTest extends TestCase
         */
 
         // json response to be returned
-        $statusBody = file_get_contents(__DIR__.'/Mocks/pay-status.json');
+        $payStatusBody = file_get_contents(__DIR__.'/Mocks/pay-status.json');
 
         // Create an instance of MockHandler for returning responses for payStatus()
-        $statusMock = new MockHandler([
-            new Response(200, [], $statusBody),
+        $payStatusMock = new MockHandler([
+            new Response(200, [], $payStatusBody),
             new RequestException('Error Communicating with Server', new Request('GET', 'test')),
         ]);
 
         // Assign the instance of MockHandler to a HandlerStack
-        $statusHandler = HandlerStack::create($statusMock);
+        $payStatusHandler = HandlerStack::create($payStatusMock);
 
         // Create a new instance of client using the payStatus() handler
-        $statusClient = new Client(['handler' => $statusHandler]);
+        $payStatusClient = new Client(['handler' => $payStatusHandler, 'debug' => true]);
+
+        // Use $payStatusClient to create an instance of the PayService() class
+        $this->payStatusClient = new PayService($payStatusClient, $this->clientId, $this->clientSecret);
+
+        /*
+        *    payRecipient() setup
+        */
+
+        // json response to be returned
+        $payRecipientStatusBody = file_get_contents(__DIR__.'/Mocks/pay-recipient-status.json');
+
+        // Create an instance of MockHandler for returning responses for payStatus()
+        $payRecipientStatusMock = new MockHandler([
+            new Response(200, [], $payRecipientStatusBody),
+            new RequestException('Error Communicating with Server', new Request('GET', 'test')),
+        ]);
+
+        // Assign the instance of MockHandler to a HandlerStack
+        $payRecipientStatusHandler = HandlerStack::create($payRecipientStatusMock);
+
+        // Create a new instance of client using the payStatus() handler
+        $payRecipientStatusClient = new Client(['handler' => $payRecipientStatusHandler, 'debug' => true]);
 
         // Use $statusClient to create an instance of the PayService() class
-        $this->statusClient = new PayService($statusClient, $this->clientId, $this->clientSecret);
+        $this->payRecipientStatusClient = new PayService($payRecipientStatusClient, $this->clientId, $this->clientSecret);
     }
 
     /*
@@ -475,6 +497,41 @@ class PayTest extends TestCase
     }
 
     /*
+    *  Pay recipient status tests
+    */
+
+    public function testPayRecipientStatus()
+    {
+        $this->assertArraySubset(
+            ['status' => 'success'],
+            $this->payRecipientStatusClient->payRecipientStatus([
+                'location' => 'http://localhost:3000/api/v1/payments/79600157-2ebb-4d7b-be1a-b7ad445554cd',
+                'accessToken' => 'myRand0mAcc3ssT0k3n',
+            ])
+        );
+    }
+
+    public function testPayRecipientStatusWithNoLocationFails()
+    {
+        $this->assertArraySubset(
+            ['data' => 'You have to provide the location'],
+            $this->payRecipientStatusClient->payRecipientStatus([
+                'accessToken' => 'myRand0mAcc3ssT0k3n',
+            ])
+        );
+    }
+
+    public function testPayRecipientStatusWithNoAccessTokenFails()
+    {
+        $this->assertArraySubset(
+            ['data' => 'You have to provide the accessToken'],
+            $this->payRecipientStatusClient->payRecipientStatus([
+                'location' => 'my_request_id',
+            ])
+        );
+    }
+
+    /*
     *  Pay status tests
     */
 
@@ -482,8 +539,8 @@ class PayTest extends TestCase
     {
         $this->assertArraySubset(
             ['status' => 'success'],
-            $this->statusClient->payStatus([
-                'location' => 'my_request_id',
+            $this->payStatusClient->payStatus([
+                'location' => 'http://localhost:3000/api/v1/payments/79600157-2ebb-4d7b-be1a-b7ad445554cd',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
         );
@@ -493,7 +550,7 @@ class PayTest extends TestCase
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the location'],
-            $this->statusClient->payStatus([
+            $this->payStatusClient->payStatus([
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
         );
@@ -503,7 +560,7 @@ class PayTest extends TestCase
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the accessToken'],
-            $this->statusClient->payStatus([
+            $this->payStatusClient->payStatus([
                 'location' => 'my_request_id',
             ])
         );
