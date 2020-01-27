@@ -53,7 +53,8 @@ use Kopokopo\SDK\K2;
 
 $clientId = 'YOUR_CLIENT_ID'; // use 'sandbox' for development in the test environment
 $clientSecret = 'YOUR_CLIENT_SECRET'; // use your sandbox app API key for development in the test environment
-$K2 = new K2($clientId, $clientSecret);
+$baseUrl = 'api.kopokopo.com'; // Use appropriate url for the different environments
+$K2 = new K2($clientId, $clientSecret, $baseUrl);
 
 // Get one of the services
 $tokens = $K2->TokenService();
@@ -73,7 +74,6 @@ if($result['status'] == 'success'){
 - Consuming
 
 ```php
-// TODO: review this
 $router->map('POST', '/webhook', function () {
     global $K2;
     global $response;
@@ -220,7 +220,7 @@ For more information, please read [api-docs#transfer](https://api-docs.kopokopo.
 
 - All the post requests are asynchronous apart from [TokenService](#tokenservice). This means that the result will be posted to your custom callback url when the request is complete. The immediate response of the post requests contain the `location` url of the request you have sent which you can use to query the status.
 
-Note: The asynchronous results are processed like webhooks.
+Note: The asynchronous results are processed like webhooks but use the application secret instead of the webhook secret.
 
 - To access the different parts of the response or webhook payload passed, use the following keys to access:
 
@@ -408,6 +408,8 @@ Note: The asynchronous results are processed like webhooks.
     - `metadata`
     - `linkSelf`
     - `linkResource`
+#### Status payloads
+-
 
 For more information on the expected payloads and error codes, please read the [api docs](https://api-docs.kopokopo.com)
 
