@@ -47,6 +47,10 @@ $router->map('GET', '/pay', function () {
     require __DIR__.'/views/pay.php';
 });
 
+$router->map('GET', '/pay/recipients', function () {
+    require __DIR__.'/views/payrecipient.php';
+});
+
 $router->map('GET', '/pay/status', function () {
     require __DIR__.'/views/paystatus.php';
 });
@@ -84,10 +88,23 @@ $router->map('POST', '/stk', function () {
         'amount' => $_POST['amount'],
         'currency' => 'KES',
         'email' => 'example@example.com',
-        'callbackUrl' => 'http://localhost:8000/test',
+        'callbackUrl' => 'http://localhost:9090/result',
         'accessToken' => $access_token,
     ];
     $response = $stk->paymentRequest($options);
+
+    return view("views/response.php",compact('response'));
+});
+
+$router->map('POST', '/stkstatus', function () {
+    global $K2;
+    global $access_token;
+    $stk = $K2->StkService();
+
+    $options = [
+        'location' => $_POST['location'],
+    ];
+    $response = $stk->paymentRequestStatus($options);
 
     return view("views/response.php",compact('response'));
 });
@@ -125,12 +142,73 @@ $router->map('POST', '/pay', function () {
         'amount' => $_POST['amount'],
         'currency' => 'KES',
         'accessToken' => $access_token,
-        'callbackUrl' => 'http://localhost:8000/webhook',
+        'callbackUrl' => 'http://localhost:9090/result',
     ];
     $response = $pay->sendPay($options);
 
     return view("views/response.php",compact('response'));
 });
+
+$router->map('POST', '/pay/recipients', function () {
+    global $K2;
+    global $access_token;
+
+    $pay = $K2->PayService();
+
+    $options = [
+        'type' => 'mobile_wallet',
+        'firstName'=> $_POST['firstName'],
+		'lastName'=> $_POST['lastName'],
+		'email'=> $_POST['email'],
+		'phone'=> $_POST['phone'],
+		'network'=> 'Safaricom',
+        'accessToken' => $access_token,
+        'callbackUrl' => 'http://localhost:9090/webhook',
+    ];
+    $response = $pay->addPayRecipient($options);
+
+    return view("views/response.php",compact('response'));
+});
+
+$router->map('POST', '/pay/status', function () {
+    global $K2;
+    global $access_token;
+
+    $pay = $K2->PayService();
+
+    $options = [
+        'location' => $_POST['location'],
+        'accessToken' => $access_token,
+    ];
+    $response = $pay->payStatus($options);
+
+    return view("views/response.php",compact('response'));
+});
+
+$router->map('POST', '/result', function () {
+    global $K2;
+    global $result;
+    global $K2_CLIENT_SECRET;
+
+    $webhooks = $K2->Webhooks();
+
+    $json_str = file_get_contents('php://input');
+    
+    // return view("views/response.php",compact('json_str'));
+
+    $result = $webhooks->webhookHandler($json_str, $_SERVER['HTTP_X_KOPOKOPO_SIGNATURE'], $K2_CLIENT_SECRET);
+
+    echo json_encode($result);
+    // return view("views/response.php",compact('response'));
+    // print("POST Details: " .$json_str);
+    // print_r($json_str);
+});
+
+$router->map('GET', '/result', function () {
+    global $result;
+    return view("views/response.php",compact('response'));
+});
+
 
 $router->map('POST', '/webhook', function () {
     global $K2;
@@ -153,8 +231,6 @@ $router->map('POST', '/webhook', function () {
 
 $router->map('GET', '/webhook/resource', function () {
     global $response;
-    // echo $response;
-    // echo json_encode($response);
     return view("views/response.php",compact('response'));
 });
 
