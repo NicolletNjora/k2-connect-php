@@ -9,6 +9,7 @@ use Kopokopo\SDK\Requests\PayRecipientAccountRequest;
 use Kopokopo\SDK\Requests\PayRequest;
 use Kopokopo\SDK\Requests\StatusRequest;
 use Exception;
+use GuzzleHttp\Psr7\Request;
 
 class PayService extends Service
 {
@@ -23,8 +24,7 @@ class PayService extends Service
                 $payRecipientrequest = new PayRecipientMobileRequest($options);
             }
 
-            // FIXME: Do not hard code version
-            $response = $this->client->post('api/v1/pay_recipients', ['body' => json_encode($payRecipientrequest->getPayRecipientBody()), 'headers' => $payRecipientrequest->getHeaders()]);
+            $response = $this->client->post('api/'.$this->version.'/pay_recipients', ['body' => json_encode($payRecipientrequest->getPayRecipientBody()), 'headers' => $payRecipientrequest->getHeaders()]);
 
             return $this->success($response);
         } catch (Exception $e) {
@@ -36,8 +36,7 @@ class PayService extends Service
     {
         $payRequest = new PayRequest($options);
         try {
-            // FIXME: Do not hard code version
-            $response = $this->client->post('api/v1/payments', ['body' => json_encode($payRequest->getPayBody()), 'headers' => $payRequest->getHeaders()]);
+            $response = $this->client->post('api/'.$this->version.'/payments', ['body' => json_encode($payRequest->getPayBody()), 'headers' => $payRequest->getHeaders()]);
 
             return $this->success($response);
         } catch (Exception $e) {
@@ -45,15 +44,31 @@ class PayService extends Service
         }
     }
 
+    public function payRecipientStatus($options)
+    {
+        $payRecipientStatus = new StatusRequest($options);
+        try {            
+            $object_uri = $payRecipientStatus->getLocation();
+            $request = new Request('GET', $object_uri);
+
+            $response = $this->client->send($request, ['timeout' => 5, 'headers' => $payRecipientStatus->getHeaders()]);
+            
+            return $this->statusSuccess($response);
+        } catch (Exception $e) {    
+            return $this->error($e->getMessage());
+        }
+    }
+
     public function payStatus($options)
     {
         $payStatus = new StatusRequest($options);
-        try {
-            // FIXME: Do not hard code version
-            // TODO: Figure out what to do with getStatus
-            $response = $this->client->get('api/v1/payments/'.$payStatus->getLocation(), ['headers' => $payStatus->getHeaders()]);
+        try {            
+            $object_uri = $payStatus->getLocation();
+            $request = new Request('GET', $object_uri);
 
-            return $this->success($response);
+            $response = $this->client->send($request, ['timeout' => 5, 'headers' => $payStatus->getHeaders()]);
+
+            return $this->statusSuccess($response);
         } catch (Exception $e) {
             return $this->error($e->getMessage());
         }

@@ -2,6 +2,8 @@
 
 namespace Kopokopo\SDK;
 
+use GuzzleHttp\Client;
+
 abstract class Service
 {
     protected $client;
@@ -13,6 +15,7 @@ abstract class Service
         $this->client = $client;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
+        $this->version = 'v1';
     }
 
     protected static function error($data)
@@ -42,6 +45,14 @@ abstract class Service
     }
 
     protected static function webhookSuccess($data)
+    {
+        return [
+            'status' => 'success',
+            'data' => $data,
+        ];
+    }
+
+    protected static function statusSuccess($data)
     {
         return [
             'status' => 'success',

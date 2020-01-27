@@ -27,7 +27,7 @@ class K2
         $this->tokenClient = new Client([
             'base_uri' => $this->baseUrl,
             'headers' => [
-                'Content-Type' => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded',
                 'Accept' => 'application/json',
             ],
         ]);

@@ -7,6 +7,7 @@ require 'vendor/autoload.php';
 use Kopokopo\SDK\Requests\StkPaymentRequest;
 use Kopokopo\SDK\Requests\StatusRequest;
 use Exception;
+use GuzzleHttp\Psr7\Request;
 
 class StkService extends Service
 {
@@ -14,8 +15,7 @@ class StkService extends Service
     {
         $stkPaymentrequest = new StkPaymentRequest($options);
         try {
-            // FIXME: Do not hard code version
-            $response = $this->client->post('api/v1/incoming_payments', ['body' => json_encode($stkPaymentrequest->getPaymentRequestBody()), 'headers' => $stkPaymentrequest->getHeaders()]);
+            $response = $this->client->post('api/'.$this->version.'/incoming_payments', ['body' => json_encode($stkPaymentrequest->getPaymentRequestBody()), 'headers' => $stkPaymentrequest->getHeaders()]);
 
             return $this->success($response);
         } catch (Exception $e) {
@@ -27,9 +27,12 @@ class StkService extends Service
     {
         $stkStatus = new StatusRequest($options);
         try {
-            $response = $this->client->get('payment_status', ['query' => $stkStatus->getLocation(), 'headers' => $stkStatus->getHeaders()]);
+            $object_uri = $stkStatus->getLocation();
+            $request = new Request('GET', $object_uri);
 
-            return $this->success($response);
+            $response = $this->client->send($request, ['timeout' => 5, 'headers' => $stkStatus->getHeaders()]);
+
+            return $this->statusSuccess($response);
         } catch (Exception $e) {
             return $this->error($e->getMessage());
         }

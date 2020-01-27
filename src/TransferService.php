@@ -8,6 +8,7 @@ use Kopokopo\SDK\Requests\SettlementAccountRequest;
 use Kopokopo\SDK\Requests\SettleFundsRequest;
 use Kopokopo\SDK\Requests\StatusRequest;
 use Exception;
+use GuzzleHttp\Psr7\Request;
 
 class TransferService extends Service
 {
@@ -15,7 +16,7 @@ class TransferService extends Service
     {
         $settlementAccountRequest = new SettlementAccountRequest($options);
         try {
-            $response = $this->client->post('merchant_bank_accounts', ['body' => json_encode($settlementAccountRequest->getSettlementAccountBody()), 'headers' => $settlementAccountRequest->getHeaders()]);
+            $response = $this->client->post('api/'.$this->version.'merchant_bank_accounts', ['body' => json_encode($settlementAccountRequest->getSettlementAccountBody()), 'headers' => $settlementAccountRequest->getHeaders()]);
 
             return $this->success($response);
         } catch (Exception $e) {
@@ -27,9 +28,24 @@ class TransferService extends Service
     {
         $settleFundsRequest = new SettleFundsRequest($options);
         try {
-            $response = $this->client->post('transfers', ['body' => json_encode($settleFundsRequest->getSettleFundsBody()), 'headers' => $settleFundsRequest->getHeaders()]);
+            $response = $this->client->post('api/'.$this->version.'transfers', ['body' => json_encode($settleFundsRequest->getSettleFundsBody()), 'headers' => $settleFundsRequest->getHeaders()]);
 
             return $this->success($response);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
+    public function settlementAccountStatus($options)
+    {
+        $settlementAccountStatus = new StatusRequest($options);
+        try {
+            $object_uri = $settlementAccountStatus->getLocation();
+            $request = new Request('GET', $object_uri);
+
+            $response = $this->client->send($request, ['timeout' => 5, 'headers' => $settlementAccountStatus->getHeaders()]);
+
+            return $this->statusSuccess($response);
         } catch (Exception $e) {
             return $this->error($e->getMessage());
         }
@@ -39,9 +55,12 @@ class TransferService extends Service
     {
         $settlementStatus = new StatusRequest($options);
         try {
-            $response = $this->client->get('transfer_status', ['query' => $settlementStatus->getLocation(), 'headers' => $settlementStatus->getHeaders()]);
+            $object_uri = $settlementStatus->getLocation();
+            $request = new Request('GET', $object_uri);
 
-            return $this->success($response);
+            $response = $this->client->send($request, ['timeout' => 5, 'headers' => $settlementStatus->getHeaders()]);
+
+            return $this->statusSuccess($response);
         } catch (Exception $e) {
             return $this->error($e->getMessage());
         }
