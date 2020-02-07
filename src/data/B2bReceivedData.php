@@ -7,11 +7,11 @@ class B2bReceivedData
     public function setData($result)
     {
         $data['id'] = $result['id'];
-        $data['resourceId'] = $result['resourceId'];
         $data['topic'] = $result['topic'];
         $data['createdAt'] = $result['created_at'];
 
         $data['eventType'] = $result['event']['type'];
+        $data['resourceId'] = $result['event']['resource']['id'];
 
         $data['reference'] = $result['event']['resource']['reference'];
         $data['originationTime'] = $result['event']['resource']['origination_time'];

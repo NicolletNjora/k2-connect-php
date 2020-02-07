@@ -2,20 +2,20 @@
 
 namespace Kopokopo\SDK\Data;
 
+// TODO: Reuse this for STK Status request response
 class StkResultData
 {
     public function setData($result)
     {
         $data['id'] = $result['id'];
-        $data['resourceId'] = $result['resourceId'];
-        $data['topic'] = $result['topic'];
-        $data['createdAt'] = $result['created_at'];
+        $data['type'] = $result['type'];
 
-        $data['status'] = $result['status'];
+        $data['initiationTime'] = $result['attributes']['initiation_time'];
+        $data['status'] = $result['attributes']['status'];
 
-        $data['eventType'] = $result['event']['type'];
+        $data['eventType'] = $result['attributes']['event']['type'];
 
-        switch ($result['status']) {
+        switch ($result['attributes']['status']) {
             case 'Failed':
                 $data['resource'] = $result['event']['resource'];
 
@@ -23,29 +23,29 @@ class StkResultData
                 $data['errors']['description'] = $result['event']['errors']['description'];
                 break;
             default:
-                $data['reference'] = $result['event']['resource']['reference'];
-                $data['originationTime'] = $result['event']['resource']['origination_time'];
-                $data['senderMsisdn'] = $result['event']['resource']['sender_msisdn'];
-                $data['amount'] = $result['event']['resource']['amount'];
-                $data['currency'] = $result['event']['resource']['currency'];
-                $data['tillNumber'] = $result['event']['resource']['till_number'];
-                $data['system'] = $result['event']['resource']['system'];
-                $data['status'] = $result['event']['resource']['status'];
-                $data['firstName'] = $result['event']['resource']['sender_first_name'];
-                $data['middleName'] = $result['event']['resource']['sender_middle_name'];
-                $data['lastName'] = $result['event']['resource']['sender_last_name'];
+                $data['transactionReference'] = $result['attributes']['event']['resource']['transaction_reference'];
+                $data['originationTime'] = $result['attributes']['event']['resource']['origination_time'];
+                $data['senderMsisdn'] = $result['attributes']['event']['resource']['sender_msisdn'];
+                $data['amount'] = $result['attributes']['event']['resource']['amount'];
+                $data['currency'] = $result['attributes']['event']['resource']['currency'];
+                $data['tillIdentifier'] = $result['attributes']['event']['resource']['till_identifier'];
+                $data['system'] = $result['attributes']['event']['resource']['system'];
+                $data['status'] = $result['attributes']['event']['resource']['status'];
+                $data['firstName'] = $result['attributes']['event']['resource']['sender_first_name'];
+                $data['middleName'] = $result['attributes']['event']['resource']['sender_middle_name'];
+                $data['lastName'] = $result['attributes']['event']['resource']['sender_last_name'];
 
-                $data['errors'] = $result['event']['errors'];
+                $data['errors'] = $result['attributes']['event']['errors'];
 
-                $data['linkResource'] = $result['_links']['resource'];
+                $data['linkResource'] = $result['attributes']['_links']['resource'];
                 break;
         }
 
         // metadata
-        $data['metadata'] = $result['metadata'];
+        $data['metadata'] = $result['attributes']['metadata'];
 
-        $data['linkSelf'] = $result['_links']['self'];
-        $data['linkPaymentRequest'] = $result['_links']['payment_request'];
+        $data['linkSelf'] = $result['attributes']['_links']['self'];
+        $data['callbackUrl'] = $result['attributes']['_links']['callback_url'];
 
         return $data;
     }

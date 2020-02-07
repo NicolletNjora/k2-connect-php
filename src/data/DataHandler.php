@@ -27,6 +27,12 @@ class DataHandler
                         break;
                 }
                 break;
+            case 'buygoods_transaction_received':
+                return BuygoodsReceivedData::setData($this->data);
+                break;
+            case 'b2b_transaction_received':
+                return B2bReceivedData::setData($this->data);
+                break;
             case 'buygoods_transaction_reversed':
                 return BuygoodsReversedData::setData($this->data);
 

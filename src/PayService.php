@@ -10,6 +10,7 @@ use Kopokopo\SDK\Requests\PayRequest;
 use Kopokopo\SDK\Requests\StatusRequest;
 use Exception;
 use GuzzleHttp\Psr7\Request;
+use Kopokopo\SDK\Data\Status\StatusDataHandler;
 
 class PayService extends Service
 {
@@ -24,7 +25,9 @@ class PayService extends Service
                 $payRecipientrequest = new PayRecipientMobileRequest($options);
             }
 
-            $response = $this->client->post('api/'.$this->version.'/pay_recipients', ['body' => json_encode($payRecipientrequest->getPayRecipientBody()), 'headers' => $payRecipientrequest->getHeaders()]);
+            $response = $this->client->post('api/'.$this->version.'/pay_recipients',
+             ['body' => json_encode($payRecipientrequest->getPayRecipientBody()),
+              'headers' => $payRecipientrequest->getHeaders()]);
 
             return $this->success($response);
         } catch (Exception $e) {
@@ -36,7 +39,9 @@ class PayService extends Service
     {
         $payRequest = new PayRequest($options);
         try {
-            $response = $this->client->post('api/'.$this->version.'/payments', ['body' => json_encode($payRequest->getPayBody()), 'headers' => $payRequest->getHeaders()]);
+            $response = $this->client->post('api/'.$this->version.'/payments',
+             ['body' => json_encode($payRequest->getPayBody()),
+              'headers' => $payRequest->getHeaders()]);
 
             return $this->success($response);
         } catch (Exception $e) {
@@ -68,7 +73,8 @@ class PayService extends Service
 
             $response = $this->client->send($request, ['timeout' => 5, 'headers' => $payStatus->getHeaders()]);
 
-            return $this->statusSuccess($response);
+            $statusDataHandler = new StatusDataHandler(json_decode($response->getBody()->getContents(), true));
+            return $this->statusSuccess($statusDataHandler->dataHandlerSort());
         } catch (Exception $e) {
             return $this->error($e->getMessage());
         }
