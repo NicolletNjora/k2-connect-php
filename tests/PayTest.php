@@ -244,10 +244,11 @@ class PayTest extends TestCase
             ['status' => 'success'],
             $this->payRecipientClient->addPayRecipient([
                 'type' => 'bank_account',
-                'name' => 'Jane',
+                'firstName' => 'Jane',
+                'lastName' => 'Doe',
                 'accountName' => 'Doe',
-                'bankRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
-                'bankBranchRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'accountNumber' => '1234567890',
                 'phone' => '+254712345678',
                 'email' => 'example@example.com',
@@ -262,9 +263,10 @@ class PayTest extends TestCase
             ['data' => 'You have to provide the accountName'],
             $this->payRecipientClient->addPayRecipient([
                 'type' => 'bank_account',
-                'name' => 'Jane',
-                'bankRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
-                'bankBranchRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'firstName' => 'Jane',
+                'lastName' => 'Doe',
+                'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'accountNumber' => '1234567890',
                 'phone' => '+254712345678',
                 'email' => 'example@example.com',
@@ -273,13 +275,14 @@ class PayTest extends TestCase
         );
     }
 
-    public function testAddPayRecipientAccountWithNoBankRefFails()
+    public function testAddPayRecipientAccountWithNoBankIdFails()
     {
         $this->assertArraySubset(
-            ['data' => 'You have to provide the bankRef'],
+            ['data' => 'You have to provide the bankId'],
             $this->payRecipientClient->addPayRecipient([
                 'type' => 'bank_account',
-                'name' => 'Jane',
+                'firstName' => 'Jane',
+                'lastName' => 'Doe',
                 'accountName' => 'Doe',
                 'bankBranchRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'accountNumber' => '1234567890',
@@ -290,15 +293,16 @@ class PayTest extends TestCase
         );
     }
 
-    public function testAddPayRecipientAccountWithNoBankBranchRefFails()
+    public function testAddPayRecipientAccountWithNoBankBranchIdFails()
     {
         $this->assertArraySubset(
-            ['data' => 'You have to provide the bankBranchRef'],
+            ['data' => 'You have to provide the bankBranchId'],
             $this->payRecipientClient->addPayRecipient([
                 'type' => 'bank_account',
-                'name' => 'Jane',
+                'firstName' => 'Jane',
+                'lastName' => 'Doe',
                 'accountName' => 'Doe',
-                'bankRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'accountNumber' => '1234567890',
                 'phone' => '+254712345678',
                 'email' => 'example@example.com',
@@ -313,10 +317,11 @@ class PayTest extends TestCase
             ['data' => 'You have to provide the accountNumber'],
             $this->payRecipientClient->addPayRecipient([
                 'type' => 'bank_account',
-                'name' => 'Jane',
+                'firstName' => 'Jane',
+                'lastName' => 'Doe',
                 'accountName' => 'Doe',
-                'bankRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
-                'bankBranchRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'phone' => '+254712345678',
                 'email' => 'example@example.com',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
@@ -330,10 +335,11 @@ class PayTest extends TestCase
             ['status' => 'success'],
             $this->payRecipientClient->addPayRecipient([
                 'type' => 'bank_account',
-                'name' => 'Jane',
+                'firstName' => 'Jane',
+                'lastName' => 'Doe',
                 'accountName' => 'Doe',
-                'bankRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
-                'bankBranchRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'accountNumber' => '1234567890',
                 'email' => 'example@example.com',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
@@ -347,10 +353,11 @@ class PayTest extends TestCase
             ['data' => 'Invalid phone format'],
             $this->payRecipientClient->addPayRecipient([
                 'type' => 'bank_account',
-                'name' => 'Jane',
+                'firstName' => 'Jane',
+                'lastName' => 'Doe',
                 'accountName' => 'Doe',
-                'bankRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
-                'bankBranchRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'accountNumber' => '1234567890',
                 'phone' => '0712345678',
                 'email' => 'example@example.com',
@@ -365,12 +372,48 @@ class PayTest extends TestCase
             ['status' => 'success'],
             $this->payRecipientClient->addPayRecipient([
                 'type' => 'bank_account',
-                'name' => 'Jane',
+                'firstName' => 'Jane',
+                'lastName' => 'Doe',
                 'accountName' => 'Doe',
-                'bankRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
-                'bankBranchRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'accountNumber' => '1234567890',
                 'phone' => '+254712345678',
+                'accessToken' => 'myRand0mAcc3ssT0k3n',
+            ])
+        );
+    }
+    public function testAddPayRecipientAccountWithNoFirstNameFails()
+    {
+        $this->assertArraySubset(
+            ['data' => 'You have to provide the firstName'],
+            $this->payRecipientClient->addPayRecipient([
+                'type' => 'bank_account',
+                'lastName' => 'Doe',
+                'accountName' => 'Doe',
+                'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'accountNumber' => '1234567890',
+                'phone' => '+254712345678',
+                'email' => 'example@example.com',
+                'accessToken' => 'myRand0mAcc3ssT0k3n',
+            ])
+        );
+    }
+
+    public function testAddPayRecipientAccountWithNoLastNameFails()
+    {
+        $this->assertArraySubset(
+            ['data' => 'You have to provide the lastName'],
+            $this->payRecipientClient->addPayRecipient([
+                'type' => 'bank_account',
+                'firstName' => 'Jane',
+                'accountName' => 'Doe',
+                'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'accountNumber' => '1234567890',
+                'phone' => '+254712345678',
+                'email' => 'example@example.com',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
         );
@@ -382,10 +425,11 @@ class PayTest extends TestCase
             ['data' => 'You have to provide the accessToken'],
             $this->payRecipientClient->addPayRecipient([
                 'type' => 'bank_account',
-                'name' => 'Jane',
+                'firstName' => 'Jane',
+                'lastName' => 'Doe',
                 'accountName' => 'Doe',
-                'bankRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
-                'bankBranchRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'accountNumber' => '1234567890',
                 'phone' => '+254712345678',
                 'email' => 'example@example.com',
@@ -404,8 +448,8 @@ class PayTest extends TestCase
             $this->payRecipientClient->addPayRecipient([
                 'name' => 'Jane',
                 'accountName' => 'Doe',
-                'bankRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
-                'bankBranchRef' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
+                'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'accountNumber' => '1234567890',
                 'phone' => '+254712345678',
                 'email' => 'example@example.com',

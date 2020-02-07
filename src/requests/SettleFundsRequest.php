@@ -23,6 +23,24 @@ class SettleFundsRequest extends BaseRequest
         return $this->getRequestData('destination');
     }
 
+    public function getUrl()
+    {
+        if (!isset($this->data['callbackUrl'])) {
+            return null;
+        }
+
+        return $this->getRequestData('callbackUrl');
+    }
+
+    public function getMetadata()
+    {
+        if (!isset($this->data['metadata'])) {
+            return null;
+        }
+
+        return $this->getRequestData('metadata');
+    }
+
     public function getSettleFundsBody()
     {
         return [
@@ -31,6 +49,10 @@ class SettleFundsRequest extends BaseRequest
                 'value' => $this->getAmount(),
             ],
             'destination' => $this->getDestination(),
+            'meta_data' => $this->getMetadata(),
+            '_links' => [
+                'callback_url' => $this->getUrl(),
+            ],
         ];
     }
 }

@@ -1,34 +1,35 @@
 {
-    "id": "cac95329-9fa5-42f1-a4fc-c08af7b868fb",
-    "resourceId": "cdb5f11f-62df-e611-80ee-0aa34a9b2388",
-    "topic": "payment_request",
-    "created_at": "2018-06-20T22:45:12.790Z",
-    "status": "Success",
-    "event": {
-        "type": "Payment Request",
-        "resource": {
-            "reference": "KKPPLLMMNN",
-            "origination_time": "2017-01-20T22:45:12.790Z",
-            "sender_msisdn": "+2549703119050",
-            "amount": 20000,
-            "currency": "KES",
-            "till_number": "111222",
-            "system": "Lipa Na M-PESA",
+    "data": {
+        "id": "d66d7354-19b6-4fd0-b917-df6c1bd44545",
+        "type": "incoming_payment",
+        "attributes": {
+            "initiation_time": "2020-02-03T13:32:33.515+03:00",
             "status": "Received",
-            "sender_first_name": "Nicollet",
-            "sender_middle_name": "N",
-            "sender_last_name": "Njora"
-        },
-        "errors": []
-    },
-    "metadata": {
-        "customer_id": "123456789",
-        "reference": "123456",
-        "notes": "Payment for invoice 123456"
-    },
-    "_links": {
-        "self": "https://api-sandbox.kopokopo.com/payment_request_results/cac95329-9fa5-42f1-a4fc-c08af7b868fb",
-        "payment_request": "https://api-sandbox.kopokopo.com/payment_requests/cac95329-9fa5-42f1-a4fc-c08af7b868fb",
-        "resource": "https://api-sandbox.kopokopo.com/buygoods_transaction/cdb5f11f-62df-e611-80ee-0aa34a9b2388"
+            "event": {
+                "type": "Buygoods Transaction",
+                "resource": {
+                    "transaction_reference": "1580725953",
+                    "origination_time": "2020-02-03T13:32:33.899+03:00",
+                    "sender_msisdn": "+254999999999",
+                    "amount": "20000.0",
+                    "currency": "KES",
+                    "till_identifier": "444555",
+                    "system": "Lipa Na MPESA",
+                    "status": "Received",
+                    "sender_first_name": "Joe",
+                    "sender_last_name": "Buyer"
+                },
+                "errors": []
+            },
+            "meta_data": {
+                "notes": "Payment for invoice 12345",
+                "reference": "123456",
+                "customer_id": "123456789"
+            },
+            "_links": {
+                "callback_url": "https://webhook.site/fa3645c6-7199-426a-8efa-98e7b754babb",
+                "self": "http://localhost:3000/api/v1/payments/d66d7354-19b6-4fd0-b917-df6c1bd44545"
+            }
+        }
     }
 }

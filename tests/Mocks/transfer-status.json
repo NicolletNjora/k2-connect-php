@@ -1,12 +1,26 @@
 {
-    "id": "d76265cd-0951-e511-80da-0aa34a9b2388",
-    "status": "Pending",
-    "initiated_at": "2018-05-02T00:30:25.580Z",
-    "amount": {
-        "value": "225.00",
-        "currency": "KES"
-    },
-    "_links": {
-        "self": "https://api-sandbox.kopokopo.com/transfers/d76265cd-0951-e511-80da-0aa34a9b2388"
+    "data": {
+        "id": "cae67cfc-498c-4b0a-849d-8a96f847379d",
+        "type": "transfer",
+        "attributes": {
+            "transaction_reference": "1581063028",
+            "destination": "b966dfbf-0084-4ee0-bd25-0a5909f5ce09",
+            "status": "Sent",
+            "origination_time": "2020-02-07T11:10:28.789+03:00",
+            "initiation_time": "2020-02-07T11:10:28.545+03:00",
+            "amount": {
+                "currency": "KES",
+                "value": "20000.0"
+            },
+            "meta_data": {
+                "notes": "Salary payment for May 2018",
+                "customerId": "8675309",
+                "something_else": "Something else"
+            },
+            "_links": {
+                "callback_url": "https://webhook.site/ee503950-3ecc-4a19-9153-c84fcdfce962",
+                "self": "http://localhost:3000/api/v1/transfers/cae67cfc-498c-4b0a-849d-8a96f847379d"
+            }
+        }
     }
 }
