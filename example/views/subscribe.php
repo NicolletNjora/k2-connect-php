@@ -8,6 +8,7 @@
             <div class="col-sm-7">
                 <select name = "event_type">
                     <option value="buygoods_transaction_received"> Buy Goods Received </option>
+                    <option value="b2b_transaction_received"> B2b Received </option>
                     <option value="buygoods_transaction_reversed"> Buy Goods Reversed </option>
                     <option value="settlement_completed"> Settlement Completed </option>
                     <option value="customer_created"> Customer Created </option>

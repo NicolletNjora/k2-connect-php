@@ -39,6 +39,10 @@ $router->map('GET', '/transfer', function () {
     require __DIR__.'/views/transfer.php';
 });
 
+$router->map('GET', '/transfer/account', function () {
+    require __DIR__.'/views/transferaccount.php';
+});
+
 $router->map('GET', '/transfer/status', function () {
     require __DIR__.'/views/transferstatus.php';
 });
@@ -64,8 +68,8 @@ $router->map('POST', '/webhook/subscribe', function () {
     $options = array(
         'eventType' => $_POST['event_type'],
         'url' => $_POST['url'],
-        'webhookSecret' => 'my_webhook_secret',
-        'scope' => 'till',
+        'webhookSecret' => 'buy_goods_webhook_secret',
+        'scope' => 'Till',
         'scopeReference' => '555555',
         'accessToken' => $access_token,
     );
@@ -118,9 +122,37 @@ $router->map('POST', '/transfer', function () {
         'amount' => $_POST['amount'],
         'currency' => 'KES',
         'destination' => $_POST['destination'],
-        'accessToken' => 'myRand0mAcc3ssT0k3n',
+        'accessToken' => $access_token,
+        'callbackUrl' => 'https://webhook.site/fa3645c6-7199-426a-8efa-98e7b754babb'
     ];
     $response = $transfer->settleFunds($options);
+
+    return view("views/response.php",compact('response'));
+});
+
+$router->map('POST', '/transfer/account', function () {
+    global $K2;
+    global $access_token;
+    $transfer = $K2->TransferService();
+
+    if($_POST['type'] == 'bank'){
+        $options = [
+            'accountName' => $_POST['accountName'],
+            'accountNumber' => $_POST['accountNumber'],
+            'bankId' => $_POST['bankId'],
+            'bankBranchId' => $_POST['branchId'],        
+            'accessToken' => $access_token,
+        ];
+        $response = $transfer->createSettlementBankAccount($options);
+    
+        return view("views/response.php",compact('response'));
+    }
+    $options = [
+        'network' => $_POST['network'],
+        'msisdn' => $_POST['phone'],       
+        'accessToken' => $access_token,
+    ];
+    $response = $transfer->createSettlementWalletAccount($options);
 
     return view("views/response.php",compact('response'));
 });
@@ -129,12 +161,6 @@ $router->map('POST', '/pay', function () {
     global $K2;
     global $access_token;
 
-    // $tokens = $K2->TokenService();
-    // $tk = $tokens->getToken();
-    // echo json_encode($tk);
-    // $access_token = $tk['data']['access_token'];
-    // echo $access_token;
-    // // global $K2;
     $pay = $K2->PayService();
 
     $options = [
@@ -155,17 +181,49 @@ $router->map('POST', '/pay/recipients', function () {
 
     $pay = $K2->PayService();
 
-    $options = [
-        'type' => 'mobile_wallet',
-        'firstName'=> $_POST['firstName'],
-		'lastName'=> $_POST['lastName'],
-		'email'=> $_POST['email'],
-		'phone'=> $_POST['phone'],
-		'network'=> 'Safaricom',
-        'accessToken' => $access_token,
-        'callbackUrl' => 'http://localhost:9090/webhook',
-    ];
+    if($_POST['type'] == 'mobile_wallet'){
+        $options = [
+            'type' => 'mobile_wallet',
+            'firstName'=> $_POST['firstName'],
+            'lastName'=> $_POST['lastName'],
+            'email'=> $_POST['email'],
+            'phone'=> $_POST['phone'],
+            'network'=> 'Safaricom',
+            'accessToken' => $access_token,
+            'callbackUrl' => 'http://localhost:9090/webhook',
+        ];
+    } else if ($_POST['type'] == 'bank_account'){
+        $options = [
+            'type' => 'bank_account',
+            'firstName'=> $_POST['firstName'],
+            'lastName'=> $_POST['lastName'],
+            'email'=> $_POST['email'],
+            'phone'=> $_POST['phone'],
+            'accountName' => $_POST['accountName'],
+            'accountNumber' => $_POST['accountNumber'],
+            'bankId' => $_POST['bankId'],
+            'bankBranchId' => $_POST['branchId'], 
+            'network'=> 'Safaricom',
+            'accessToken' => $access_token,
+            'callbackUrl' => 'http://localhost:9090/webhook',
+        ];
+    }
     $response = $pay->addPayRecipient($options);
+
+    return view("views/response.php",compact('response'));
+});
+
+$router->map('POST', '/transfer/status', function () {
+    global $K2;
+    global $access_token;
+
+    $transfer = $K2->TransferService();
+
+    $options = [
+        'location' => $_POST['location'],
+        'accessToken' => $access_token,
+    ];
+    $response = $transfer->transferStatus($options);
 
     return view("views/response.php",compact('response'));
 });
