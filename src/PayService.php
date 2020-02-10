@@ -11,6 +11,7 @@ use Kopokopo\SDK\Requests\StatusRequest;
 use Exception;
 use GuzzleHttp\Psr7\Request;
 use Kopokopo\SDK\Data\Status\StatusDataHandler;
+use Kopokopo\SDK\Data\PayData;
 
 class PayService extends Service
 {
@@ -44,37 +45,6 @@ class PayService extends Service
               'headers' => $payRequest->getHeaders()]);
 
             return $this->success($response);
-        } catch (Exception $e) {
-            return $this->error($e->getMessage());
-        }
-    }
-
-    public function payRecipientStatus($options)
-    {
-        $payRecipientStatus = new StatusRequest($options);
-        try {            
-            $object_uri = $payRecipientStatus->getLocation();
-            $request = new Request('GET', $object_uri);
-
-            $response = $this->client->send($request, ['timeout' => 5, 'headers' => $payRecipientStatus->getHeaders()]);
-            
-            return $this->statusSuccess($response);
-        } catch (Exception $e) {    
-            return $this->error($e->getMessage());
-        }
-    }
-
-    public function payStatus($options)
-    {
-        $payStatus = new StatusRequest($options);
-        try {            
-            $object_uri = $payStatus->getLocation();
-            $request = new Request('GET', $object_uri);
-
-            $response = $this->client->send($request, ['timeout' => 5, 'headers' => $payStatus->getHeaders()]);
-
-            $statusDataHandler = new StatusDataHandler(json_decode($response->getBody()->getContents(), true));
-            return $this->statusSuccess($statusDataHandler->dataHandlerSort());
         } catch (Exception $e) {
             return $this->error($e->getMessage());
         }

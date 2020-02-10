@@ -2,7 +2,7 @@
 
 namespace Kopokopo\SDK\Requests;
 
-class SettlementWalletAccountRequest extends BaseRequest
+class MerchantWalletRequest extends BaseRequest
 {
     public function getMsisdn()
     {
@@ -14,7 +14,7 @@ class SettlementWalletAccountRequest extends BaseRequest
         return $this->getRequestData('network');
     }
 
-    public function getSettlementWalletAccountBody()
+    public function getMerchantWalletBody()
     {
         return [
             'msisdn' => $this->getMsisdn(),

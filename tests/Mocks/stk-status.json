@@ -17,6 +17,7 @@
                     "system": "Lipa Na MPESA",
                     "status": "Received",
                     "sender_first_name": "Joe",
+                    "sender_middle_name": "null",
                     "sender_last_name": "Buyer"
                 },
                 "errors": []
@@ -28,7 +29,7 @@
             },
             "_links": {
                 "callback_url": "https://webhook.site/fa3645c6-7199-426a-8efa-98e7b754babb",
-                "self": "http://localhost:3000/api/v1/payments/d66d7354-19b6-4fd0-b917-df6c1bd44545"
+                "self": "http://localhost:3000/api/v1/incoming_payments/d66d7354-19b6-4fd0-b917-df6c1bd44545"
             }
         }
     }

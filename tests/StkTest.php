@@ -301,7 +301,7 @@ class StkTest extends TestCase
     {
         $this->assertArraySubset(
             ['status' => 'success'],
-            $this->statusClient->paymentRequestStatus([
+            $this->statusClient->getStatus([
                 'location' => 'my_request_id',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
@@ -312,7 +312,7 @@ class StkTest extends TestCase
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the location'],
-            $this->statusClient->paymentRequestStatus([
+            $this->statusClient->getStatus([
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
         );
@@ -322,7 +322,7 @@ class StkTest extends TestCase
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the accessToken'],
-            $this->statusClient->paymentRequestStatus([
+            $this->statusClient->getStatus([
                 'location' => 'my_request_id',
             ])
         );

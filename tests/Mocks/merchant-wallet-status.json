@@ -7,15 +7,4 @@
             "network": "Safaricom"
         }
     }
-}{
-    "data": {
-        "id": "86fab23f-3a69-4233-b863-91affd21b0d7",
-        "type": "merchant_bank_account",
-        "attributes": {
-            "account_name": "John Doe",
-            "account_number": "123456789",
-            "bank_id": "c7f300c0-f1ef-4151-9bbe-005005aa3747",
-            "bank_branch_id": "c7f300c0-f1ef-4151-9bbe-005005aa3747"
-        }
-    }
 }

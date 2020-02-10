@@ -4,22 +4,23 @@ namespace Kopokopo\SDK;
 
 require 'vendor/autoload.php';
 
-use Kopokopo\SDK\Requests\SettlementBankAccountRequest;
-use Kopokopo\SDK\Requests\SettlementWalletAccountRequest;
+use Kopokopo\SDK\Requests\MerchantBankAccountRequest;
+use Kopokopo\SDK\Requests\MerchantWalletRequest;
 use Kopokopo\SDK\Requests\SettleFundsRequest;
 use Kopokopo\SDK\Requests\StatusRequest;
 use Exception;
 use GuzzleHttp\Psr7\Request;
+use Kopokopo\SDK\Data\Status\StatusDataHandler;
 
 class TransferService extends Service
 {
-    public function createSettlementBankAccount($options)
+    public function createMerchantBankAccount($options)
     {
-        $settlementBankAccountRequest = new SettlementBankAccountRequest($options);
+        $merchantBankAccountRequest = new MerchantBankAccountRequest($options);
         try {
             $response = $this->client->post('api/'.$this->version.'/merchant_bank_accounts',
-                ['body' => json_encode($settlementBankAccountRequest->getSettlementBankAccountBody()),
-                 'headers' => $settlementBankAccountRequest->getHeaders()]);
+                ['body' => json_encode($merchantBankAccountRequest->getMerchantBankAccountBody()),
+                 'headers' => $merchantBankAccountRequest->getHeaders()]);
 
             return $this->success($response);
         } catch (Exception $e) {
@@ -27,13 +28,13 @@ class TransferService extends Service
         }
     }
 
-    public function createSettlementWalletAccount($options)
+    public function createMerchantWallet($options)
     {
-        $settlementWalletAccountRequest = new SettlementWalletAccountRequest($options);
+        $merchantWalletRequest = new MerchantWalletRequest($options);
         try {
             $response = $this->client->post('api/'.$this->version.'/merchant_wallets',
-             ['body' => json_encode($settlementWalletAccountRequest->getSettlementWalletAccountBody()),
-              'headers' => $settlementWalletAccountRequest->getHeaders()]);
+             ['body' => json_encode($merchantWalletRequest->getMerchantWalletBody()),
+              'headers' => $merchantWalletRequest->getHeaders()]);
 
             return $this->success($response);
         } catch (Exception $e) {
@@ -50,36 +51,6 @@ class TransferService extends Service
               'headers' => $settleFundsRequest->getHeaders()]);
 
             return $this->success($response);
-        } catch (Exception $e) {
-            return $this->error($e->getMessage());
-        }
-    }
-
-    public function settlementAccountStatus($options)
-    {
-        $settlementAccountStatus = new StatusRequest($options);
-        try {
-            $object_uri = $settlementAccountStatus->getLocation();
-            $request = new Request('GET', $object_uri);
-
-            $response = $this->client->send($request, ['timeout' => 5, 'headers' => $settlementAccountStatus->getHeaders()]);
-
-            return $this->statusSuccess($response);
-        } catch (Exception $e) {
-            return $this->error($e->getMessage());
-        }
-    }
-
-    public function settlementStatus($options)
-    {
-        $settlementStatus = new StatusRequest($options);
-        try {
-            $object_uri = $settlementStatus->getLocation();
-            $request = new Request('GET', $object_uri);
-
-            $response = $this->client->send($request, ['timeout' => 5, 'headers' => $settlementStatus->getHeaders()]);
-
-            return $this->statusSuccess($response);
         } catch (Exception $e) {
             return $this->error($e->getMessage());
         }

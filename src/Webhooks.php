@@ -6,7 +6,7 @@ require 'vendor/autoload.php';
 
 use Kopokopo\SDK\Requests\WebhookSubscribeRequest;
 use Kopokopo\SDK\Helpers\Auth;
-use Kopokopo\SDK\Data\DataHandler;
+use Kopokopo\SDK\Data\WebhookDataHandler;
 use InvalidArgumentException;
 
 class Webhooks extends Service
@@ -22,9 +22,9 @@ class Webhooks extends Service
         $statusCode = $auth->authenticate($details, $signature, $webhookSecret);
 
         if ($statusCode == 200) {
-            $dataHandler = new DataHandler(json_decode($details, true));
+            $dataHandler = new WebhookDataHandler(json_decode($details, true));
 
-            return $this->webhookSuccess($dataHandler->dataHandlerSort($details));
+            return $this->webhookSuccess($dataHandler->dataHandlerSort());
         } else {
             return $this->error('Unauthorized');
         }

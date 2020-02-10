@@ -548,7 +548,7 @@ class PayTest extends TestCase
     {
         $this->assertArraySubset(
             ['status' => 'success'],
-            $this->payRecipientStatusClient->payRecipientStatus([
+            $this->payRecipientStatusClient->getStatus([
                 'location' => 'http://localhost:3000/api/v1/payments/79600157-2ebb-4d7b-be1a-b7ad445554cd',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
@@ -559,7 +559,7 @@ class PayTest extends TestCase
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the location'],
-            $this->payRecipientStatusClient->payRecipientStatus([
+            $this->payRecipientStatusClient->getStatus([
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
         );
@@ -569,7 +569,7 @@ class PayTest extends TestCase
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the accessToken'],
-            $this->payRecipientStatusClient->payRecipientStatus([
+            $this->payRecipientStatusClient->getStatus([
                 'location' => 'my_request_id',
             ])
         );
@@ -583,7 +583,7 @@ class PayTest extends TestCase
     {
         $this->assertArraySubset(
             ['status' => 'success'],
-            $this->payStatusClient->payStatus([
+            $this->payStatusClient->getStatus([
                 'location' => 'http://localhost:3000/api/v1/payments/79600157-2ebb-4d7b-be1a-b7ad445554cd',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
@@ -594,7 +594,7 @@ class PayTest extends TestCase
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the location'],
-            $this->payStatusClient->payStatus([
+            $this->payStatusClient->getStatus([
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
         );
@@ -604,7 +604,7 @@ class PayTest extends TestCase
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the accessToken'],
-            $this->payStatusClient->payStatus([
+            $this->payStatusClient->getStatus([
                 'location' => 'my_request_id',
             ])
         );

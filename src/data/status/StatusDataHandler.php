@@ -3,8 +3,9 @@
 namespace Kopokopo\SDK\Data\Status;
 
 use Kopokopo\SDK\Data\PayData;
-use Kopokopo\SDK\Data\StkResultData;
+use Kopokopo\SDK\Data\StkData;
 use Kopokopo\SDK\Data\PayRecipientData;
+use Kopokopo\SDK\Data\TransferData;
 
 class StatusDataHandler
 {
@@ -18,16 +19,27 @@ class StatusDataHandler
     public function dataHandlerSort()
     {
         switch ($this->data['type']) {
+            case 'webhook_subscription':
+                return WebhookSubscriptionData::setData($this->data);
+                break;
             case 'incoming_payment':
-                // TODO: Reuse this for STK Status request response
-                return StkResultData::setData($this->data);
-            break;
+                return StkData::setData($this->data);
+                break;
             case 'payment':
                 return PayData::setData($this->data);
-            break; 
+                break;
             case 'pay_recipient':
                 return PayRecipientData::setData($this->data);
-            break;
+                break;
+            case 'transfer':
+                return TransferData::setData($this->data);
+                break;
+            case 'merchant_bank_account':
+                return MerchantBankAccount::setData($this->data);
+                break;
+            case 'merchant_wallet':
+                return MerchantWallet::setData($this->data);
+                break;
         }
     }
 }

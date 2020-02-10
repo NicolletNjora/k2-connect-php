@@ -2,8 +2,7 @@
 
 namespace Kopokopo\SDK\Data;
 
-// TODO: Reuse this for STK Status request response
-class StkResultData
+class StkData
 {
     public function setData($result)
     {
@@ -17,10 +16,10 @@ class StkResultData
 
         switch ($result['attributes']['status']) {
             case 'Failed':
-                $data['resource'] = $result['event']['resource'];
+                $data['resource'] = $result['attributes']['event']['resource'];
 
-                $data['errors']['code'] = $result['event']['errors']['code'];
-                $data['errors']['description'] = $result['event']['errors']['description'];
+                $data['errors']['code'] = $result['attributes']['event']['errors']['code'];
+                $data['errors']['description'] = $result['attributes']['event']['errors']['description'];
                 break;
             default:
                 $data['transactionReference'] = $result['attributes']['event']['resource']['transaction_reference'];
@@ -36,13 +35,11 @@ class StkResultData
                 $data['lastName'] = $result['attributes']['event']['resource']['sender_last_name'];
 
                 $data['errors'] = $result['attributes']['event']['errors'];
-
-                $data['linkResource'] = $result['attributes']['_links']['resource'];
                 break;
         }
 
         // metadata
-        $data['metadata'] = $result['attributes']['metadata'];
+        $data['metadata'] = $result['attributes']['meta_data'];
 
         $data['linkSelf'] = $result['attributes']['_links']['self'];
         $data['callbackUrl'] = $result['attributes']['_links']['callback_url'];

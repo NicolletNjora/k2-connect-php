@@ -21,48 +21,48 @@ class TransferTest extends TestCase
         $this->clientSecret = '10af7ad062a21d9c841877f87b7dec3dbe51aeb3';
 
         /*
-        *    createSettlementBankAccount() setup
+        *    createMerchantBankAccount() setup
         */
 
-        // Headers to be returned by the createSettlementAccount() mock
-        $settlementBankAccountHeaders = file_get_contents(__DIR__.'/Mocks/settlementAccountHeaders.json');
+        // Headers to be returned by the createMerchantAccount() mock
+        $merchantBankAccountHeaders = file_get_contents(__DIR__.'/Mocks/merchantAccountHeaders.json');
 
-        // Create an instance of MockHandler for returning responses for createSettlementAccount()
-        $settlementBankAccountMock = new MockHandler([
-            new Response(201, json_decode($settlementBankAccountHeaders, true)),
+        // Create an instance of MockHandler for returning responses for createMerchantAccount()
+        $merchantBankAccountMock = new MockHandler([
+            new Response(201, json_decode($merchantBankAccountHeaders, true)),
             new RequestException('Error Communicating with Server', new Request('GET', 'test')),
         ]);
 
         // Assign the instance of MockHandler to a HandlerStack
-        $settlementBankAccountHandler = HandlerStack::create($settlementBankAccountMock);
+        $merchantBankAccountHandler = HandlerStack::create($merchantBankAccountMock);
 
-        // Create a new instance of client using the createSettlementBankAccount() handler
-        $settlementBankAccountClient = new Client(['handler' => $settlementBankAccountHandler]);
+        // Create a new instance of client using the createMerchantBankAccount() handler
+        $merchantBankAccountClient = new Client(['handler' => $merchantBankAccountHandler]);
 
-        // Use $settlementBankAccountClient to create an instance of the TransferService() class
-        $this->settlementBankAccountClient = new TransferService($settlementBankAccountClient, $this->clientId, $this->clientSecret);
+        // Use $merchantBankAccountClient to create an instance of the TransferService() class
+        $this->merchantBankAccountClient = new TransferService($merchantBankAccountClient, $this->clientId, $this->clientSecret);
 
          /*
-        *    createSettlementWallet() setup
+        *    createMerchantWallet() setup
         */
 
-        // Headers to be returned by the createSettlementWallet() mock
-        $settlementWalletHeaders = file_get_contents(__DIR__.'/Mocks/settlementWalletHeaders.json');
+        // Headers to be returned by the createMerchantWallet() mock
+        $merchantWalletHeaders = file_get_contents(__DIR__.'/Mocks/merchantWalletHeaders.json');
 
-        // Create an instance of MockHandler for returning responses for createSettlementWallet()
-        $settlementWalletMock = new MockHandler([
-            new Response(201, json_decode($settlementWalletHeaders, true)),
+        // Create an instance of MockHandler for returning responses for createMerchantWallet()
+        $merchantWalletMock = new MockHandler([
+            new Response(201, json_decode($merchantWalletHeaders, true)),
             new RequestException('Error Communicating with Server', new Request('GET', 'test')),
         ]);
 
         // Assign the instance of MockHandler to a HandlerStack
-        $settlementWalletHandler = HandlerStack::create($settlementWalletMock);
+        $merchantWalletHandler = HandlerStack::create($merchantWalletMock);
 
-        // Create a new instance of client using the createSettlementWallet() handler
-        $settlementWalletClient = new Client(['handler' => $settlementWalletHandler]);
+        // Create a new instance of client using the createMerchantWallet() handler
+        $merchantWalletClient = new Client(['handler' => $merchantWalletHandler]);
 
-        // Use $settlementWalletClient to create an instance of the TransferService() class
-        $this->settlementWalletClient = new TransferService($settlementWalletClient, $this->clientId, $this->clientSecret);
+        // Use $merchantWalletClient to create an instance of the TransferService() class
+        $this->merchantWalletClient = new TransferService($merchantWalletClient, $this->clientId, $this->clientSecret);
 
         /*
         *    settleFunds() setup
@@ -87,48 +87,48 @@ class TransferTest extends TestCase
         $this->settleFundsClient = new TransferService($settleFundsClient, $this->clientId, $this->clientSecret);
 
         /*
-        *    settlementBankAccountStatus() setup
+        *    merchantBankAccountStatus() setup
         */
 
         // json response to be returned
-        $settlementBankAccountStatusBody = file_get_contents(__DIR__.'/Mocks/merchant-account-status.json');
+        $merchantBankAccountStatusBody = file_get_contents(__DIR__.'/Mocks/merchant-account-status.json');
 
-        // Create an instance of MockHandler for returning responses for settlementAccountStatus()
-        $settlementBankAccountStatusMock = new MockHandler([
-            new Response(200, [], $settlementBankAccountStatusBody),
+        // Create an instance of MockHandler for returning responses for merchantAccountStatus()
+        $merchantBankAccountStatusMock = new MockHandler([
+            new Response(200, [], $merchantBankAccountStatusBody),
             new RequestException('Error Communicating with Server', new Request('GET', 'test')),
         ]);
 
         // Assign the instance of MockHandler to a HandlerStack
-        $settlementBankAccountStatusHandler = HandlerStack::create($settlementBankAccountStatusMock);
+        $merchantBankAccountStatusHandler = HandlerStack::create($merchantBankAccountStatusMock);
 
-        // Create a new instance of client using the settlementBankAccountStatus() handler
-        $settlementBankAccountStatusClient = new Client(['handler' => $settlementBankAccountStatusHandler]);
+        // Create a new instance of client using the merchantBankAccountStatus() handler
+        $merchantBankAccountStatusClient = new Client(['handler' => $merchantBankAccountStatusHandler]);
 
-        // Use$settlementBankAccountStatusClient to create an instance of the TransferService() class
-        $this->settlementBankAccountStatusClient = new TransferService($settlementBankAccountStatusClient, $this->clientId, $this->clientSecret);
+        // Use$merchantBankAccountStatusClient to create an instance of the TransferService() class
+        $this->merchantBankAccountStatusClient = new TransferService($merchantBankAccountStatusClient, $this->clientId, $this->clientSecret);
 
         /*
-        *    settlementWalletStatus() setup
+        *    merchantWalletStatus() setup
         */
 
         // json response to be returned
-        $settlementWalletStatusBody = file_get_contents(__DIR__.'/Mocks/merchant-wallet-status.json');
+        $merchantWalletStatusBody = file_get_contents(__DIR__.'/Mocks/merchant-wallet-status.json');
 
-        // Create an instance of MockHandler for returning responses for settlementWalletStatus()
-        $settlementWalletStatusMock = new MockHandler([
-            new Response(200, [], $settlementWalletStatusBody),
+        // Create an instance of MockHandler for returning responses for merchantWalletStatus()
+        $merchantWalletStatusMock = new MockHandler([
+            new Response(200, [], $merchantWalletStatusBody),
             new RequestException('Error Communicating with Server', new Request('GET', 'test')),
         ]);
 
         // Assign the instance of MockHandler to a HandlerStack
-        $settlementWalletStatusHandler = HandlerStack::create($settlementWalletStatusMock);
+        $merchantWalletStatusHandler = HandlerStack::create($merchantWalletStatusMock);
 
-        // Create a new instance of client using the settlementWalletStatus() handler
-        $settlementWalletStatusClient = new Client(['handler' => $settlementWalletStatusHandler]);
+        // Create a new instance of client using the merchantWalletStatus() handler
+        $merchantWalletStatusClient = new Client(['handler' => $merchantWalletStatusHandler]);
 
-        // Use$settlementWalletStatusClient to create an instance of the TransferService() class
-        $this->settlementWalletStatusClient = new TransferService($settlementWalletStatusClient, $this->clientId, $this->clientSecret);
+        // Use$merchantWalletStatusClient to create an instance of the TransferService() class
+        $this->merchantWalletStatusClient = new TransferService($merchantWalletStatusClient, $this->clientId, $this->clientSecret);
 
         /*
         *    settlementStatus() setup
@@ -154,14 +154,14 @@ class TransferTest extends TestCase
     }
 
     /*
-    *   Create Settlement Bank account tests
+    *   Create Merchant Bank account tests
     */
 
-    public function testCreateSettlementBankAccountSucceeds()
+    public function testCreateMerchantBankAccountSucceeds()
     {
         $this->assertArraySubset(
             ['status' => 'success'],
-            $this->settlementBankAccountClient->createSettlementBankAccount([
+            $this->merchantBankAccountClient->createMerchantBankAccount([
                 'accountName' => 'my_account_name',
                 'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
@@ -171,11 +171,11 @@ class TransferTest extends TestCase
         );
     }
 
-    public function testCreateSettlementBankAccountWithNoAccountNameFails()
+    public function testCreateMerchantBankAccountWithNoAccountNameFails()
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the accountName'],
-            $this->settlementBankAccountClient->createSettlementBankAccount([
+            $this->merchantBankAccountClient->createMerchantBankAccount([
                 'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'accountNumber' => '1234567890',
@@ -184,11 +184,11 @@ class TransferTest extends TestCase
         );
     }
 
-    public function testCreateSettlementBankAccountWithNoBankIdFails()
+    public function testCreateMerchantBankAccountWithNoBankIdFails()
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the bankId'],
-            $this->settlementBankAccountClient->createSettlementBankAccount([
+            $this->merchantBankAccountClient->createMerchantBankAccount([
                 'accountName' => 'my_account_name',
                 'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'accountNumber' => '1234567890',
@@ -197,11 +197,11 @@ class TransferTest extends TestCase
         );
     }
 
-    public function testCreateSettlementBankAccountWithNoBankBranchIdFails()
+    public function testCreateMerchantBankAccountWithNoBankBranchIdFails()
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the bankBranchId'],
-            $this->settlementBankAccountClient->createSettlementBankAccount([
+            $this->merchantBankAccountClient->createMerchantBankAccount([
                 'accountName' => 'my_account_name',
                 'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'accountNumber' => '1234567890',
@@ -210,11 +210,11 @@ class TransferTest extends TestCase
         );
     }
 
-    public function testCreateSettlementBankAccountWithNoAccountNumberFails()
+    public function testCreateMerchantBankAccountWithNoAccountNumberFails()
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the accountNumber'],
-            $this->settlementBankAccountClient->createSettlementBankAccount([
+            $this->merchantBankAccountClient->createMerchantBankAccount([
                 'accountName' => 'my_account_name',
                 'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
@@ -223,11 +223,11 @@ class TransferTest extends TestCase
         );
     }
 
-    public function testCreateSettlementBankAccountWithNoAccessTokenFails()
+    public function testCreateMerchantBankAccountWithNoAccessTokenFails()
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the accessToken'],
-            $this->settlementBankAccountClient->createSettlementBankAccount([
+            $this->merchantBankAccountClient->createMerchantBankAccount([
                 'accountName' => 'my_account_name',
                 'bankId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
                 'bankBranchId' => '9ed38155-7d6f-11e3-83c3-5404a6144203',
@@ -237,14 +237,14 @@ class TransferTest extends TestCase
     }
 
     /*
-    *   Create Settlement wallet tests
+    *   Create Merchant wallet tests
     */
 
-    public function testCreateSettlementWalletSucceeds()
+    public function testCreateMerchantWalletSucceeds()
     {
         $this->assertArraySubset(
             ['status' => 'success'],
-            $this->settlementWalletClient->createSettlementWalletAccount([
+            $this->merchantWalletClient->createMerchantWallet([
                 'msisdn' => '+254725895598',
                 'network' => 'Safaricom',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
@@ -252,33 +252,33 @@ class TransferTest extends TestCase
         );
     }
 
-    public function testCreateSettlementWalletWithoutNetworkFails()
+    public function testCreateMerchantWalletWithoutNetworkFails()
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the network'],
-            $this->settlementWalletClient->createSettlementWalletAccount([
+            $this->merchantWalletClient->createMerchantWallet([
                 'msisdn' => '+254725895598',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
         );
     }
 
-    public function testCreateSettlementWalletWithoutMsisdnFails()
+    public function testCreateMerchantWalletWithoutMsisdnFails()
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the msisdn'],
-            $this->settlementWalletClient->createSettlementWalletAccount([
+            $this->merchantWalletClient->createMerchantWallet([
                 'network' => 'Safaricom',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
         );
     }
 
-    public function testCreateSettlementWalletWithoutAccessTokenFails()
+    public function testCreateMerchantWalletWithoutAccessTokenFails()
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the accessToken'],
-            $this->settlementWalletClient->createSettlementWalletAccount([
+            $this->merchantWalletClient->createMerchantWallet([
                 'network' => 'Safaricom',
                 'msisdn' => '+254725895598',
             ])
@@ -352,49 +352,84 @@ class TransferTest extends TestCase
     }
 
     /*
-    *   Settlement Account Status tests
+    *   Merchant Bank Account Status tests
     */
 
-    public function testSettlementAccountStatusSucceeds()
+    public function testMerchantAccountStatusSucceeds()
     {
         $this->assertArraySubset(
             ['status' => 'success'],
-            $this->settlementBankAccountStatusClient->settlementAccountStatus([
+            $this->merchantBankAccountStatusClient->getStatus([
                 'location' => 'my_request_id',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
         );
     }
 
-    public function testSettlementAccountStatusWithNoLocationFails()
+    public function testMerchantAccountStatusWithNoLocationFails()
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the location'],
-            $this->settlementBankAccountStatusClient->settlementAccountStatus([
+            $this->merchantBankAccountStatusClient->getStatus([
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
         );
     }
 
-    public function testSettlementAccountStatusWithNoAccessTokenFails()
+    public function testMerchantAccountStatusWithNoAccessTokenFails()
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the accessToken'],
-            $this->settlementBankAccountStatusClient->settlementAccountStatus([
+            $this->merchantBankAccountStatusClient->getStatus([
                 'location' => 'my_request_id',
             ])
         );
     }
 
     /*
-    *   Settlement Status tests
+    *   Merchant Wallet Status tests
+    */
+
+    public function testMerchantWalletStatusSucceeds()
+    {
+        $this->assertArraySubset(
+            ['status' => 'success'],
+            $this->merchantWalletStatusClient->getStatus([
+                'location' => 'my_request_id',
+                'accessToken' => 'myRand0mAcc3ssT0k3n',
+            ])
+        );
+    }
+
+    public function testMerchantWalletStatusWithNoLocationFails()
+    {
+        $this->assertArraySubset(
+            ['data' => 'You have to provide the location'],
+            $this->merchantWalletStatusClient->getStatus([
+                'accessToken' => 'myRand0mAcc3ssT0k3n',
+            ])
+        );
+    }
+
+    public function testMerchantWalletStatusWithNoAccessTokenFails()
+    {
+        $this->assertArraySubset(
+            ['data' => 'You have to provide the accessToken'],
+            $this->merchantWalletStatusClient->getStatus([
+                'location' => 'my_request_id',
+            ])
+        );
+    }
+
+    /*
+    *   Settle Funds Status tests
     */
 
     public function testSettlementStatusSucceeds()
     {
         $this->assertArraySubset(
             ['status' => 'success'],
-            $this->settlementStatusClient->settlementStatus([
+            $this->settlementStatusClient->getStatus([
                 'location' => 'my_request_id',
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
@@ -405,7 +440,7 @@ class TransferTest extends TestCase
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the location'],
-            $this->settlementStatusClient->settlementStatus([
+            $this->settlementStatusClient->getStatus([
                 'accessToken' => 'myRand0mAcc3ssT0k3n',
             ])
         );
@@ -415,7 +450,7 @@ class TransferTest extends TestCase
     {
         $this->assertArraySubset(
             ['data' => 'You have to provide the accessToken'],
-            $this->settlementStatusClient->settlementStatus([
+            $this->settlementStatusClient->getStatus([
                 'location' => 'my_request_id',
             ])
         );
