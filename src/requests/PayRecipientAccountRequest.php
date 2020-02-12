@@ -59,6 +59,14 @@ class PayRecipientAccountRequest extends BaseRequest
         }
     }
 
+    public function getNetwork()
+    {
+        if (!isset($this->data['network'])) {
+            return null;
+        }
+        return $this->getRequestData('network');
+    }
+
     public function getPayRecipientBody()
     {
         return [
@@ -72,6 +80,7 @@ class PayRecipientAccountRequest extends BaseRequest
                 'account_number' => $this->getAccountNumber(),
                 'email' => $this->getEmail(),
                 'phone' => $this->getPhone(),
+                'network' => $this->getNetwork()
             ],
         ];
     }
