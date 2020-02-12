@@ -160,7 +160,7 @@ NB: The access token is required to send subsequent requests
   - `accessToken`: Gotten from the [`TokenService`](#tokenservice) response `REQUIRED`
   - `metadata`: It is an associative array containing a maximum of 5 key value pairs
 
-- `paymentRequestStatus(['location' => 'location', 'accessToken' => 'my_access_token' ])`:
+- `getStatus(['location' => 'location', 'accessToken' => 'my_access_token' ])`:
 
    - `location`: The request location you get when you send a request `REQUIRED`
   - `accessToken`: Gotten from the [`TokenService`](#tokenservice) response `REQUIRED`
@@ -188,7 +188,7 @@ For more information, please read <https://api-docs.kopokopo.com/#receive-paymen
   - `accessToken`: Gotten from the [`TokenService`](#tokenservice) response `REQUIRED`
   - `metadata`: It is a hash containing a maximum of 5 key value pairs
 
-- `payStatus(['location' => 'location', 'accessToken' => 'my_access_token' ])`:
+- `getStatus(['location' => 'location', 'accessToken' => 'my_access_token' ])`:
 
   - `location`: The request location you get when you send a request `REQUIRED`
   - `accessToken`: Gotten from the [`TokenService`](#tokenservice) response `REQUIRED`
@@ -219,7 +219,7 @@ For more information, please read <https://api-docs.kopokopo.com/#send-money-pay
   - `amount`: Amount to charge. `REQUIRED`
   - `accessToken`: Gotten from the [`TokenService`](#tokenservice) response `REQUIRED`
 
-- `settlementStatus(['location' => 'location', 'accessToken' => 'my_access_token' ])`:
+- `getStatus(['location' => 'location', 'accessToken' => 'my_access_token' ])`:
 
   - `location`: The request location you get when you send a request `REQUIRED`
   - `accessToken`: Gotten from the [`TokenService`](#tokenservice) response `REQUIRED`
@@ -359,41 +359,48 @@ Note: The asynchronous results are processed like webhooks but use the applicati
 - Transfer result
 
   - `id`
-  - `topic`
+  - `type`
   - `status`
-  - `completedAt`
+  - `transactionReference`
+  - `destination`
+  - `originationTime`
+  - `initiationTime`
   - `amount`
   - `currency`
+  - `metadata`
   - `linkSelf`
+  - `callbackUrl`
 
 - Pay result
 
-  - `topic`
+  - `id`
+  - `type`
   - `status`
-  - `reference`
+  - `transactionReference`
   - `originationTime`
+  - `initiationTime`
   - `destination`
   - `amount`
   - `currency`
   - `metadata`
   - `linkSelf`
+  - `callbackUrl`
 
 - Stk Push Result
 
   - Successful result
 
     - `id`
-    - `resourceId`
-    - `topic`
-    - `createdAt`
+    - `type`
+    - `initiationTime`
     - `status`
     - `eventType`
-    - `reference`
+    - `transactionReference`
     - `originationTime`
     - `senderMsisdn`
     - `amount`
     - `currency`
-    - `tillNumber`
+    - `tillIdentifier`
     - `system`
     - `firstName`
     - `middleName`
@@ -401,15 +408,13 @@ Note: The asynchronous results are processed like webhooks but use the applicati
     - `errors`
     - `metadata`
     - `linkSelf`
-    - `linkResource`
-    - `linkPaymentRequest`
+    - `callbackUrl`
 
   - Unsuccessful result
 
     - `id`
-    - `resourceId`
-    - `topic`
-    - `createdAt`
+    - `type`
+    - `initiationTime`
     - `status`
     - `eventType`
     - `resource`
@@ -417,7 +422,7 @@ Note: The asynchronous results are processed like webhooks but use the applicati
     - `errorsDescription`
     - `metadata`
     - `linkSelf`
-    - `linkResource`
+    - `callbackUrl`
 #### Status payloads
 -
 
@@ -429,7 +434,7 @@ For more information on the expected payloads and error codes, please read the [
 
 ## Contributions
 
-We welcome those with open arms just make a pull request and we will review.
+We welcome contributions with open arms just make a pull request and we will review.
 
 ### Development
 
