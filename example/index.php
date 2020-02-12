@@ -100,15 +100,16 @@ $router->map('POST', '/stk', function () {
     return view("views/response.php",compact('response'));
 });
 
-$router->map('POST', '/stkstatus', function () {
+$router->map('POST', '/stk/status', function () {
     global $K2;
     global $access_token;
     $stk = $K2->StkService();
 
     $options = [
         'location' => $_POST['location'],
+        'accessToken' => $access_token
     ];
-    $response = $stk->paymentRequestStatus($options);
+    $response = $stk->getStatus($options);
 
     return view("views/response.php",compact('response'));
 });
@@ -223,7 +224,7 @@ $router->map('POST', '/transfer/status', function () {
         'location' => $_POST['location'],
         'accessToken' => $access_token,
     ];
-    $response = $transfer->transferStatus($options);
+    $response = $transfer->getStatus($options);
 
     return view("views/response.php",compact('response'));
 });
@@ -238,7 +239,7 @@ $router->map('POST', '/pay/status', function () {
         'location' => $_POST['location'],
         'accessToken' => $access_token,
     ];
-    $response = $pay->payStatus($options);
+    $response = $pay->getStatus($options);
 
     return view("views/response.php",compact('response'));
 });
