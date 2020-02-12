@@ -1,11 +1,6 @@
 <?php
 
-namespace Kopokopo\SDK\Data\Status;
-
-use Kopokopo\SDK\Data\PayData;
-use Kopokopo\SDK\Data\StkData;
-use Kopokopo\SDK\Data\PayRecipientData;
-use Kopokopo\SDK\Data\TransferData;
+namespace Kopokopo\SDK\Data;
 
 class StatusDataHandler
 {

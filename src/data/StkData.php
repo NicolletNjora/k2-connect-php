@@ -18,8 +18,8 @@ class StkData
             case 'Failed':
                 $data['resource'] = $result['attributes']['event']['resource'];
 
-                $data['errors']['code'] = $result['attributes']['event']['errors']['code'];
-                $data['errors']['description'] = $result['attributes']['event']['errors']['description'];
+                $data['errorsCode'] = $result['attributes']['event']['errors']['code'];
+                $data['errorsDescription'] = $result['attributes']['event']['errors']['description'];
                 break;
             default:
                 $data['transactionReference'] = $result['attributes']['event']['resource']['transaction_reference'];

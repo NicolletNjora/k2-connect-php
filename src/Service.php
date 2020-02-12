@@ -5,7 +5,7 @@ namespace Kopokopo\SDK;
 use Kopokopo\SDK\Requests\StatusRequest;
 use Exception;
 use GuzzleHttp\Psr7\Request;
-use Kopokopo\SDK\Data\Status\StatusDataHandler;
+use Kopokopo\SDK\Data\StatusDataHandler;
 
 abstract class Service
 {

@@ -14,7 +14,7 @@ class PayData
         $data['destination'] = $result['attributes']['destination'];
         $data['status'] = $result['attributes']['status'];
 
-        $data['origination_time'] = $result['attributes']['origination_time'];
+        $data['originationTime'] = $result['attributes']['origination_time'];
         $data['initiationTime'] = $result['attributes']['initiation_time']; 
 
         $data['amount'] = $result['attributes']['amount']['value'];

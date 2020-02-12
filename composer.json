@@ -20,7 +20,6 @@
             "Kopokopo\\SDK\\Requests\\": "src/requests",
             "Kopokopo\\SDK\\Helpers\\": "src/helpers",
             "Kopokopo\\SDK\\Data\\": "src/data",
-            "Kopokopo\\SDK\\Data\\Status\\": "src/data/status",
             "Kopokopo\\SDK\\Tests\\": "tests"
         }
     }

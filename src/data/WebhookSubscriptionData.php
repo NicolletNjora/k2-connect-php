@@ -1,6 +1,6 @@
 <?php
 
-namespace Kopokopo\SDK\Data\Status;
+namespace Kopokopo\SDK\Data;
 
 class WebhookSubscriptionData
 {
