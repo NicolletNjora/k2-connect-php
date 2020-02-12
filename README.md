@@ -28,8 +28,9 @@ use Kopokopo\SDK\K2;
 
 $clientId = 'YOUR_CLIENT_ID'; // do not hard code this value
 $clientSecret = 'YOUR_CLIENT_SECRET'; // do not hard code this value
+$baseUrl = 'api.kopokopo.com'; // Use appropriate url for the different environments
 
-$K2 = new K2($clientId, $clientSecret);
+$K2 = new K2($clientId, $clientSecret, $baseUrl);
 ```
 
 ### After initialization, you can get instances of offered services as follows:
