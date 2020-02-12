@@ -181,12 +181,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "c291e45d40e638815990004e5f7ee367c2b752e9"
+                "reference": "e193ff330a0f28b5e5f65ed3d804f5e2a89376e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/c291e45d40e638815990004e5f7ee367c2b752e9",
-                "reference": "c291e45d40e638815990004e5f7ee367c2b752e9",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/e193ff330a0f28b5e5f65ed3d804f5e2a89376e3",
+                "reference": "e193ff330a0f28b5e5f65ed3d804f5e2a89376e3",
                 "shasum": ""
             },
             "require": {
@@ -244,7 +244,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2019-12-21T15:35:40+00:00"
+            "time": "2020-02-04T14:54:51+00:00"
         },
         {
             "name": "kopokopo/k2-connect-php",
@@ -252,7 +252,7 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/NicolletNjora/k2-connect-php",
-                "reference": "122d608c37d04c5f3cb20c373fab3073b78f6033"
+                "reference": "df2f6addf9160644da36108c205f90781db1161a"
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.3"
@@ -277,7 +277,7 @@
                 }
             ],
             "description": "Kopokopo's php SDK",
-            "time": "2020-01-16T08:07:09+00:00"
+            "time": "2020-02-12T05:27:49+00:00"
         },
         {
             "name": "psr/http-message",

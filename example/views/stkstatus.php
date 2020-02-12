@@ -2,7 +2,7 @@
     include 'layout.php';
 ?>
 <div class="container">
-    <form id="bulkSmsForm"(action="/stkstatus", method="post")>    
+    <form id="bulkSmsForm"(action="/stk/status", method="post")>    
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" (for="location")> Resource Location </label>
             <div class="col-sm-7">

@@ -124,7 +124,7 @@ $router->map('POST', '/transfer', function () {
         'currency' => 'KES',
         'destination' => $_POST['destination'],
         'accessToken' => $access_token,
-        'callbackUrl' => 'https://webhook.site/fa3645c6-7199-426a-8efa-98e7b754babb'
+        'callbackUrl' => 'http://localhost:9090/result'
     ];
     $response = $transfer->settleFunds($options);
 
@@ -144,7 +144,7 @@ $router->map('POST', '/transfer/account', function () {
             'bankBranchId' => $_POST['branchId'],        
             'accessToken' => $access_token,
         ];
-        $response = $transfer->createSettlementBankAccount($options);
+        $response = $transfer->createMerchantBankAccount($options);
     
         return view("views/response.php",compact('response'));
     }
@@ -153,7 +153,7 @@ $router->map('POST', '/transfer/account', function () {
         'msisdn' => $_POST['phone'],       
         'accessToken' => $access_token,
     ];
-    $response = $transfer->createSettlementWalletAccount($options);
+    $response = $transfer->createMerchantWallet($options);
 
     return view("views/response.php",compact('response'));
 });
